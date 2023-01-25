@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Facade;
 
 return [
 
+    'api_ibge' => env('PROVIDER_IBGE', 'https://servicodados.ibge.gov.br/api/'),
+    
+    'api_brasil' => env('PROVIDER_BRASIL_API', 'https://brasilapi.com.br/api/'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
