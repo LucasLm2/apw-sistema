@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\TipoServico;
 use App\Http\Requests\StoreTipoServicoRequest;
 use App\Http\Requests\UpdateTipoServicoRequest;
+use Illuminate\Support\Facades\Cache;
 
 class TipoServicoController extends Controller
 {
@@ -16,7 +17,12 @@ class TipoServicoController extends Controller
      */
     public function index()
     {
-        return view('cadastros.tipo-servico.index');
+        $tipoServicos = Cache::rememberForever('tipoServicos', function () {
+            return TipoServico::all(['id', 'nome', 'descricao']);
+        });
+
+        return view('cadastros.tipo-servico.index')
+            ->with('tipoServicos', $tipoServicos);
     }
 
     /**
@@ -26,7 +32,7 @@ class TipoServicoController extends Controller
      */
     public function create()
     {
-        //
+        return view('cadastros.tipo-servico.create-edit');
     }
 
     /**
@@ -37,18 +43,15 @@ class TipoServicoController extends Controller
      */
     public function store(StoreTipoServicoRequest $request)
     {
-        //
-    }
+        $nome = TipoServico::create([
+            'nome' => $request->nome,
+            'descricao' => $request->descricao,
+        ])->nome;
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\TipoServico  $tipoServico
-     * @return \Illuminate\Http\Response
-     */
-    public function show(TipoServico $tipoServico)
-    {
-        //
+        Cache::forget('tipoServicos');
+
+        return to_route('cadastro.tipo-servico.index')
+            ->with('sucesso', "Tipo de servico '{$nome}' adicionada com sucesso.");
     }
 
     /**
@@ -59,7 +62,8 @@ class TipoServicoController extends Controller
      */
     public function edit(TipoServico $tipoServico)
     {
-        //
+        return view('cadastros.tipo-servico.create-edit')
+            ->with('tipoServico', $tipoServico);
     }
 
     /**
@@ -71,7 +75,14 @@ class TipoServicoController extends Controller
      */
     public function update(UpdateTipoServicoRequest $request, TipoServico $tipoServico)
     {
-        //
+        $tipoServico->nome = $request->nome;
+        $tipoServico->descricao = $request->descricao;
+        $tipoServico->save();
+
+        Cache::forget('tipoServicos');
+
+        return to_route('cadastro.tipo-servico.index')
+            ->with('sucesso', "Tipo de servico '{$tipoServico->nome}' atualizada com sucesso.");
     }
 
     /**
@@ -82,6 +93,11 @@ class TipoServicoController extends Controller
      */
     public function destroy(TipoServico $tipoServico)
     {
-        //
+        $tipoServico->delete();
+
+        Cache::forget('tipoServicos');
+
+        return to_route('cadastro.tipo-servico.index')
+            ->with('sucesso', "Tipo de servico '{$tipoServico->nome}' deletada com sucesso.");
     }
 }
