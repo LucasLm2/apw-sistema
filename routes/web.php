@@ -5,9 +5,11 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Cadastros\ClienteController;
-use App\Http\Controllers\Cadastros\FornecedorController;
-use App\Http\Controllers\Cadastros\ProdutoController;
+use App\Http\Controllers\Cadastros\ReguladoraController;
+use App\Http\Controllers\Cadastros\SeguradoController;
+use App\Http\Controllers\Cadastros\SeguradoraController;
+use App\Http\Controllers\Cadastros\TipoDespesaController;
+use App\Http\Controllers\Cadastros\TipoServicoController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,7 +40,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/register', [RegisterController::class, 'register']);
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::resource('cliente', ClienteController::class)->except('show');
-    Route::resource('fornecedor', FornecedorController::class)->except('show');
-    Route::resource('produto', ProdutoController::class)->except('show');
+    // Cadastros
+    Route::prefix('cadastro')->group(function () {
+        Route::name('cadastro.')->group(function () {
+            Route::resource('reguladora', ReguladoraController::class)->except('show');
+            Route::resource('seguradora', SeguradoraController::class)->except('show');
+            Route::resource('segurado', SeguradoController::class)->except('show');
+            Route::resource('tipo-despesa', TipoDespesaController::class)->except('show');
+            Route::resource('tipo-servico', TipoServicoController::class)->except('show');
+        });
+    });
 });
