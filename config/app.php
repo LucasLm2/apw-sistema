@@ -8,6 +8,9 @@ return [
     
     'api_brasil' => env('PROVIDER_BRASIL_API', 'https://brasilapi.com.br/api/'),
 
+    'bcode_ceps' => env('PROVIDER_BCODE_CEPS', 'https://apis.bcode.com.br/api/cep/v1/'),
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -197,7 +200,6 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
-        App\Providers\HorizonServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
     ],
