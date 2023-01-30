@@ -24,7 +24,13 @@ class StoreTipoDespesaRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nome' => [
+                'required',
+                'string',
+            ],
+            'descricao' => [
+                'string'
+            ]
         ];
     }
 }

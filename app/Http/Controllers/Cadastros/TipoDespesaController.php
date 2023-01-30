@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\TipoDespesa;
 use App\Http\Requests\StoreTipoDespesaRequest;
 use App\Http\Requests\UpdateTipoDespesaRequest;
+use Illuminate\Support\Facades\Cache;
 
 class TipoDespesaController extends Controller
 {
@@ -16,7 +17,12 @@ class TipoDespesaController extends Controller
      */
     public function index()
     {
-        return view('cadastros.tipo-despesa.index');
+        $tipoDespesas = Cache::rememberForever('tipoDespesas', function () {
+            return TipoDespesa::all(['id', 'nome', 'descricao']);
+        });
+
+        return view('cadastros.tipo-despesa.index')
+            ->with('tipoDespesas', $tipoDespesas);
     }
 
     /**
@@ -26,7 +32,7 @@ class TipoDespesaController extends Controller
      */
     public function create()
     {
-        //
+        return view('cadastros.tipo-despesa.create-edit');
     }
 
     /**
@@ -37,18 +43,15 @@ class TipoDespesaController extends Controller
      */
     public function store(StoreTipoDespesaRequest $request)
     {
-        //
-    }
+        $nome = TipoDespesa::create([
+            'nome' => $request->nome,
+            'descricao' => $request->descricao,
+        ])->nome;
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\TipoDespesa  $tipoDespesa
-     * @return \Illuminate\Http\Response
-     */
-    public function show(TipoDespesa $tipoDespesa)
-    {
-        //
+        Cache::forget('tipoDespesas');
+
+        return to_route('cadastro.tipo-despesa.index')
+            ->with('sucesso', "Tipo de despesa '{$nome}' adicionada com sucesso.");
     }
 
     /**
@@ -59,7 +62,8 @@ class TipoDespesaController extends Controller
      */
     public function edit(TipoDespesa $tipoDespesa)
     {
-        //
+        return view('cadastros.tipo-despesa.create-edit')
+            ->with('tipoDespesa', $tipoDespesa);
     }
 
     /**
@@ -71,7 +75,14 @@ class TipoDespesaController extends Controller
      */
     public function update(UpdateTipoDespesaRequest $request, TipoDespesa $tipoDespesa)
     {
-        //
+        $tipoDespesa->nome = $request->nome;
+        $tipoDespesa->descricao = $request->descricao;
+        $tipoDespesa->save();
+
+        Cache::forget('tipoDespesas');
+
+        return to_route('cadastro.tipo-despesa.index')
+            ->with('sucesso', "Tipo de despesa '{$tipoDespesa->nome}' atualizada com sucesso.");
     }
 
     /**
@@ -82,6 +93,11 @@ class TipoDespesaController extends Controller
      */
     public function destroy(TipoDespesa $tipoDespesa)
     {
-        //
+        $tipoDespesa->delete();
+
+        Cache::forget('tipoDespesas');
+        
+        return to_route('cadastro.tipo-despesa.index')
+            ->with('sucesso', "Tipo de despesa '{$tipoDespesa->nome}' deletada com sucesso.");
     }
 }
