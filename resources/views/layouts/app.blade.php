@@ -46,8 +46,60 @@
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('home') ? 'active':'' }}" href="{{ route('home') }}">{{ __('Home') }}</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('register') ? 'active':'' }}" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Cadastros
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a 
+                                            class="dropdown-item {{ request()->routeIs('cadastro.reguladora.index') ? 'active':'' }}" 
+                                            href="{{ route('cadastro.reguladora.index') }}"
+                                        >
+                                            {{ __('Reguladoras') }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a 
+                                            class="dropdown-item {{ request()->routeIs('cadastro.segurado.index') ? 'active':'' }}" 
+                                            href="{{ route('cadastro.segurado.index') }}"
+                                        >
+                                            {{ __('Segurado') }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a 
+                                            class="dropdown-item {{ request()->routeIs('cadastro.seguradora.index') ? 'active':'' }}" 
+                                            href="{{ route('cadastro.seguradora.index') }}"
+                                        >
+                                            {{ __('Seguradora') }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a 
+                                            class="dropdown-item {{ request()->routeIs('cadastro.tipo-despesa.index') ? 'active':'' }}" 
+                                            href="{{ route('cadastro.tipo-despesa.index') }}"
+                                        >
+                                            {{ __('Tipo de despesas') }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a 
+                                            class="dropdown-item {{ request()->routeIs('cadastro.tipo-servico.index') ? 'active':'' }}" 
+                                            href="{{ route('cadastro.tipo-servico.index') }}"
+                                        >
+                                            {{ __('Tipo de serviços') }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a 
+                                            class="dropdown-item {{ request()->routeIs('register') ? 'active':'' }}" 
+                                            href="{{ route('register') }}"
+                                        >
+                                            {{ __('Usuários') }}
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
