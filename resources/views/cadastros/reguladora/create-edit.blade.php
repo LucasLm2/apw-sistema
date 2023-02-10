@@ -37,8 +37,8 @@
                             type="text" 
                             class="form-control @error('nome') is-invalid @enderror" 
                             name="nome" 
-                            value="{{ isset($reguladora->nome) ? $reguladora->nome : old('nome') }}" 
-                            required 
+                            value="{{ isset($reguladora->nome) ? $reguladora->nome : old('nome') }}"
+                            required
                             autofocus
                         >
 
@@ -60,6 +60,8 @@
                             class="form-control @error('cnpj') is-invalid @enderror" 
                             name="cnpj" 
                             value="{{ isset($reguladora->cnpj) ? $reguladora->cnpj : old('cnpj') }}"
+                            data-inputmask="'mask': '99.999.999/9999-99'"
+                            required
                         >
 
                         @error('cnpj')
@@ -81,4 +83,10 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+    <script type="module">
+        Inputmask().mask(document.querySelectorAll("input"));
+    </script>
 @endsection

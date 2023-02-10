@@ -24,7 +24,15 @@ class StoreReguladoraRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nome' => [
+                'required',
+                'string',
+            ],
+            'cnpj' => [
+                'required',
+                'string',
+                'cnpj'
+            ]
         ];
     }
 }
