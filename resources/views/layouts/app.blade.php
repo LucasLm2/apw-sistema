@@ -128,5 +128,10 @@
             @yield('content')
         </main>
     </div>
+    <script type="module">
+        @if (session('success'))
+            swal("Ok!", "{!! session('success') !!}", "success");
+        @endif
+    </script>
 </body>
 </html>
