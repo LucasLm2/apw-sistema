@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Reguladora;
 use App\Http\Requests\StoreReguladoraRequest;
 use App\Http\Requests\UpdateReguladoraRequest;
+use Illuminate\Support\Facades\Cache;
 
 class ReguladoraController extends Controller
 {
@@ -16,7 +17,12 @@ class ReguladoraController extends Controller
      */
     public function index()
     {
-        return view('cadastros.reguladora.index');
+        $reguladoras = Cache::rememberForever('reguladoras', function () {
+            return Reguladora::all(['id', 'nome', 'cnpj']);
+        });
+
+        return view('cadastros.reguladora.index')
+            ->with('reguladoras', $reguladoras);
     }
 
     /**
@@ -26,7 +32,7 @@ class ReguladoraController extends Controller
      */
     public function create()
     {
-        //
+        return view('cadastros.reguladora.create-edit');
     }
 
     /**
@@ -37,18 +43,15 @@ class ReguladoraController extends Controller
      */
     public function store(StoreReguladoraRequest $request)
     {
-        //
-    }
+        $nome = Reguladora::create([
+            'nome' => $request->nome,
+            'cnpj' => $request->cnpj,
+        ])->nome;
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Reguladora  $reguladora
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Reguladora $reguladora)
-    {
-        //
+        Cache::forget('reguladoras');
+
+        return to_route('cadastro.reguladora.index')
+            ->with('success', "Reguladora '{$nome}' adicionada com sucesso.");
     }
 
     /**
@@ -59,7 +62,8 @@ class ReguladoraController extends Controller
      */
     public function edit(Reguladora $reguladora)
     {
-        //
+        return view('cadastros.reguladora.create-edit')
+            ->with('reguladora', $reguladora);
     }
 
     /**
@@ -71,7 +75,14 @@ class ReguladoraController extends Controller
      */
     public function update(UpdateReguladoraRequest $request, Reguladora $reguladora)
     {
-        //
+        $reguladora->nome = $request->nome;
+        $reguladora->cnpj = $request->cnpj;
+        $reguladora->save();
+
+        Cache::forget('reguladoras');
+
+        return to_route('cadastro.reguladora.index')
+            ->with('success', "Reguladora '{$reguladora->nome}' atualizada com sucesso.");
     }
 
     /**
@@ -82,6 +93,11 @@ class ReguladoraController extends Controller
      */
     public function destroy(Reguladora $reguladora)
     {
-        //
+        $reguladora->delete();
+
+        Cache::forget('reguladoras');
+        
+        return to_route('cadastro.reguladora.index')
+            ->with('success', "Reguladora '{$reguladora->nome}' excluida com sucesso.");
     }
 }
