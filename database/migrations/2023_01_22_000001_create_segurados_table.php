@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('segurados', function (Blueprint $table) {
             $table->id();
-            $table->string('cpnj', 14);
+            $table->string('cnpj', 14);
             $table->string('nome');
             $table->string('inscricao_estadual')->nullable();
             $table->string('site')->nullable();
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreign('endereco_id')->references('id')->on('enderecos');
 
             // Indexs
-            $table->unique('cpnj');
+            $table->unique('cnpj');
             $table->index('endereco_id');
         });
     }
