@@ -32,7 +32,15 @@
                     <label for="nome" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
                     <div class="col-md-6">
-                        <input id="nome" type="text" class="form-control @error('nome') is-invalid @enderror" name="nome" value="{{ isset($tipoServico->nome) ? $tipoServico->nome : old('nome') }}" required autofocus>
+                        <input 
+                            id="nome" 
+                            type="text" 
+                            class="form-control @error('nome') is-invalid @enderror" 
+                            name="nome" 
+                            value="{{ isset($tipoServico->nome) ? $tipoServico->nome : old('nome') }}" 
+                            required 
+                            autofocus
+                        >
 
                         @error('nome')
                             <span class="invalid-feedback" role="alert">
@@ -46,7 +54,13 @@
                     <label for="descricao" class="col-md-4 col-form-label text-md-end">{{ __('Description') }}</label>
 
                     <div class="col-md-6">
-                        <input id="descricao" type="text" class="form-control @error('descricao') is-invalid @enderror" name="descricao" value="{{ isset($tipoServico->descricao) ? $tipoServico->descricao : old('descricao') }}">
+                        <input 
+                            id="descricao" 
+                            type="text" 
+                            class="form-control @error('descricao') is-invalid @enderror" 
+                            name="descricao" 
+                            value="{{ isset($tipoServico->descricao) ? $tipoServico->descricao : old('descricao') }}"
+                        >
 
                         @error('descricao')
                             <span class="invalid-feedback" role="alert">
