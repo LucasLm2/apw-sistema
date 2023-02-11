@@ -20,8 +20,8 @@
                     <tr>
                         <th class="col-3">{{ __('Name') }}</th>
                         <th class="col-8">{{ __('Description') }}</th>
-                        <th class="col-1">{{ __('Edit') }}</th>
-                        <th class="col-1">{{ __('Delete') }}</th>
+                        <th class="col-1 text-center">{{ __('Edit') }}</th>
+                        <th class="col-1 text-center">{{ __('Delete') }}</th>
                     </tr>
                 </thead>
                 <tbody>        
@@ -29,18 +29,22 @@
                         <tr>
                             <td>{{ $tipoServicos->nome }}</td>
                             <td>{{ $tipoServicos->descricao }}</td>
-                            <td>
-                                <a href="{{ route('cadastro.tipo-servico.edit', $tipoServicos->id) }}">
-                                    Editar
+                            <td class="text-center">
+                                <a 
+                                    class="text-success"
+                                    href="{{ route('cadastro.tipo-servico.edit', $tipoServicos->id) }}"
+                                >
+                                    <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <a 
+                                    class="text-danger"
                                     href="{{ route('cadastro.tipo-servico.destroy', $tipoServicos->id) }}"
                                     onclick="event.preventDefault();
-                                        document.getElementById('tipo-servico-{{ $tipoServicos->id }}-form').submit();"
+                                        excluir('tipo-servico-{{ $tipoServicos->id }}-form');"
                                 >
-                                    Excluir
+                                    <i class="fa-solid fa-trash"></i>
                                 </a>
                                 <form 
                                     id="tipo-servico-{{ $tipoServicos->id }}-form" 

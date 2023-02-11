@@ -20,27 +20,31 @@
                     <tr>
                         <th class="col-3">{{ __('Name') }}</th>
                         <th class="col-8">{{ __('CNPJ') }}</th>
-                        <th class="col-1">{{ __('Edit') }}</th>
-                        <th class="col-1">{{ __('Delete') }}</th>
+                        <th class="col-1 text-center">{{ __('Edit') }}</th>
+                        <th class="col-1 text-center">{{ __('Delete') }}</th>
                     </tr>
                 </thead>
                 <tbody>        
                     @forelse ($reguladoras as $reguladora) 
                         <tr>
                             <td>{{ $reguladora->nome }}</td>
-                            <td>{{ $reguladora->cnpj }}</td>
-                            <td>
-                                <a href="{{ route('cadastro.reguladora.edit', $reguladora->id) }}">
-                                    Editar
+                            <td class="label-cnpj" data-inputmask="'mask': '99.999.999/9999-99'">{{ $reguladora->cnpj }}</td>
+                            <td class="text-center">
+                                <a 
+                                    class="text-success"
+                                    href="{{ route('cadastro.reguladora.edit', $reguladora->id) }}"
+                                >
+                                    <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <a 
+                                    class="text-danger"
                                     href="{{ route('cadastro.reguladora.destroy', $reguladora->id) }}"
                                     onclick="event.preventDefault();
-                                        document.getElementById('reguladora-{{ $reguladora->id }}-form').submit();"
+                                        excluir('reguladora-{{ $reguladora->id }}-form');"
                                 >
-                                    Excluir
+                                    <i class="fa-solid fa-trash"></i>
                                 </a>
                                 <form 
                                     id="reguladora-{{ $reguladora->id }}-form" 
@@ -63,4 +67,10 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+    <script type="module">
+        Inputmask().mask(document.querySelectorAll(".label-cnpj"));
+    </script>
 @endsection
