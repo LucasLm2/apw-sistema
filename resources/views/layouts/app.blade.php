@@ -17,6 +17,8 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
+    <input id="url-base" type="hidden" value="{{ config('app.url') }}">
+    <input id="url-cep" type="hidden" value="{{ config('app.bcode_ceps') }}">
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
@@ -132,25 +134,6 @@
         @if (session('success'))
             swal("Ok!", "{!! session('success') !!}", "success");
         @endif
-    </script>
-    <script>
-        function excluir(nomeFormExcluir) {
-            swal({
-                title: "Tem certeza que deseja excluir?",
-                text: "Uma vez excluído, você não será capaz de recuperar!",
-                icon: "warning",
-                buttons: {
-                    cancel: "Cancelar",
-                    confirm: "Excluir"
-                },
-                dangerMode: true,
-                })
-                .then((willDelete) => {
-                if (willDelete) {
-                    document.getElementById(nomeFormExcluir).submit();
-                }
-            });
-        }
     </script>
     @yield('scripts')
 </body>

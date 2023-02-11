@@ -164,6 +164,7 @@
                             name="cep" 
                             value="{{ isset($reguladora->cep) ? $reguladora->cep : old('cep') }}"
                             data-inputmask="'mask': '99.999-999'"
+                            onblur="pesquisaCep(this.value)"
                         >
 
                         @error('cep')
@@ -183,6 +184,7 @@
                             class="form-select @error('estado') is-invalid @enderror" 
                             name="estado" 
                             value="{{ isset($reguladora->estado) ? $reguladora->estado : old('estado') }}"
+                            onchange="buscarMunicipios(this.value)"
                         >
                             <option value="">Selecione...</option>
                             @foreach ($estados as $estado)
@@ -317,6 +319,10 @@
 
 @section('scripts')
     <script type="module">
-        Inputmask().mask(document.querySelectorAll("input"));
+        adicionarMascara(document.querySelectorAll("input"));
+    </script>
+
+    <script>
+        
     </script>
 @endsection

@@ -13,7 +13,7 @@ class Estado extends Model
     protected $primaryKey = 'cod_ibge';
     public $incrementing = false;
 
-    public static function getIdByUf(string $uf): Estado|null
+    public static function getIdByUf(string $uf): int|null
     {
         return Estado::select('cod_ibge')
             ->where('uf', $uf)
