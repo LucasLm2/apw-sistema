@@ -2,7 +2,7 @@
 
 namespace App\Models\Endereco;
 
-use App\Helpers\Helper;
+use App\Helpers\ManipulacaoString;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -49,8 +49,27 @@ class Endereco extends Model
             ->first();
     }
 
-    public static function createAndReturnId(array $infEndereco): int 
+    public static function createAndReturnId(object $dados): int
     {
-        return Endereco::create($infEndereco)->id;
+        $bairroId = null;
+        if($dados->bairro != '') {
+            $bairroId = Bairro::createAndReturnId($dados->bairro, $dados->municipio);
+        }
+
+        $ruaId = null;
+        if($dados->rua != '' && $bairroId != null) {
+            $ruaId = Rua::createAndReturnId($dados->rua, $bairroId);
+        }
+
+        return Endereco::create([
+            'cep' => ManipulacaoString::limpaString($dados->cep),
+            'municipio_cod_ibge' => $dados->municipio,
+            'bairro_id' => $bairroId,
+            'rua_id' => $ruaId,
+            'numero' => $dados->numero,
+            'complemento' => $dados->complemento,
+            'latitude' => null,
+            'longitude' => null
+        ])->id;
     }
 }
