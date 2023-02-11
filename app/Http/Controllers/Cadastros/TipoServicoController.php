@@ -51,7 +51,7 @@ class TipoServicoController extends Controller
         Cache::forget('tipoServicos');
 
         return to_route('cadastro.tipo-servico.index')
-            ->with('sucesso', "Tipo de servico '{$nome}' adicionada com sucesso.");
+            ->with('success', "Tipo de servico '{$nome}' adicionado com sucesso.");
     }
 
     /**
@@ -82,7 +82,7 @@ class TipoServicoController extends Controller
         Cache::forget('tipoServicos');
 
         return to_route('cadastro.tipo-servico.index')
-            ->with('sucesso', "Tipo de servico '{$tipoServico->nome}' atualizada com sucesso.");
+            ->with('success', "Tipo de servico '{$tipoServico->nome}' atualizado com sucesso.");
     }
 
     /**
@@ -98,6 +98,6 @@ class TipoServicoController extends Controller
         Cache::forget('tipoServicos');
 
         return to_route('cadastro.tipo-servico.index')
-            ->with('sucesso', "Tipo de servico '{$tipoServico->nome}' deletada com sucesso.");
+            ->with('success', "Tipo de servico '{$tipoServico->nome}' excluido com sucesso.");
     }
 }

@@ -128,5 +128,30 @@
             @yield('content')
         </main>
     </div>
+    <script type="module">
+        @if (session('success'))
+            swal("Ok!", "{!! session('success') !!}", "success");
+        @endif
+    </script>
+    <script>
+        function excluir(nomeFormExcluir) {
+            swal({
+                title: "Tem certeza que deseja excluir?",
+                text: "Uma vez excluído, você não será capaz de recuperar!",
+                icon: "warning",
+                buttons: {
+                    cancel: "Cancelar",
+                    confirm: "Excluir"
+                },
+                dangerMode: true,
+                })
+                .then((willDelete) => {
+                if (willDelete) {
+                    document.getElementById(nomeFormExcluir).submit();
+                }
+            });
+        }
+    </script>
+    @yield('scripts')
 </body>
 </html>

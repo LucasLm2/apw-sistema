@@ -51,7 +51,7 @@ class TipoDespesaController extends Controller
         Cache::forget('tipoDespesas');
 
         return to_route('cadastro.tipo-despesa.index')
-            ->with('sucesso', "Tipo de despesa '{$nome}' adicionada com sucesso.");
+            ->with('success', "Tipo de despesa '{$nome}' adicionada com sucesso.");
     }
 
     /**
@@ -82,7 +82,7 @@ class TipoDespesaController extends Controller
         Cache::forget('tipoDespesas');
 
         return to_route('cadastro.tipo-despesa.index')
-            ->with('sucesso', "Tipo de despesa '{$tipoDespesa->nome}' atualizada com sucesso.");
+            ->with('success', "Tipo de despesa '{$tipoDespesa->nome}' atualizada com sucesso.");
     }
 
     /**
@@ -98,6 +98,6 @@ class TipoDespesaController extends Controller
         Cache::forget('tipoDespesas');
         
         return to_route('cadastro.tipo-despesa.index')
-            ->with('sucesso', "Tipo de despesa '{$tipoDespesa->nome}' deletada com sucesso.");
+            ->with('success', "Tipo de despesa '{$tipoDespesa->nome}' excluida com sucesso.");
     }
 }
