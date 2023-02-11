@@ -11,7 +11,7 @@ function pesquisaCep(valor) {
         return;
     }
 
-    bloqueaCampos()
+    bloqueaCampos();
     aguardarPesquisa();
 
     let url = `${document.getElementById('url-cep').value}${cep}`;
