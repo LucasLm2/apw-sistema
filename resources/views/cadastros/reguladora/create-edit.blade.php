@@ -26,6 +26,7 @@
                 @csrf
                 @if (request()->routeIs('cadastro.reguladora.edit'))
                     @method('PUT')
+                    <input type="hidden" name="endereco_id" value="{{ $reguladora->endereco_id }}">
                 @endif
 
                 <div class="row mb-3">
@@ -190,7 +191,11 @@
                             @foreach ($estados as $estado)
                                 <option 
                                     value="{{$estado->uf}}" 
-                                    @selected(old('estado') == $estado->uf)
+                                    @selected(
+                                        isset($reguladora->estado) ? 
+                                            $reguladora->estado == $estado->uf : 
+                                            old('estado') == $estado->uf
+                                        )
                                 >{{$estado->nome}}</option>
                             @endforeach
                         </select>
@@ -320,9 +325,9 @@
 @section('scripts')
     <script type="module">
         adicionarMascara(document.querySelectorAll("input"));
-    </script>
-
-    <script>
-        
+        @if (request()->routeIs('cadastro.reguladora.edit'))
+            await buscarMunicipios('{!! $reguladora->estado !!}');
+            document.getElementById('municipio').value = '{!! $reguladora->municipio !!}';
+        @endif
     </script>
 @endsection
