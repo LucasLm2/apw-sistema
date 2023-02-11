@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Cadastros;
 
+use App\Helpers\ManipulacaoString;
 use App\Http\Controllers\Controller;
 use App\Models\Reguladora;
 use App\Http\Requests\StoreReguladoraRequest;
 use App\Http\Requests\UpdateReguladoraRequest;
+use App\Models\Endereco\Estado;
 use Illuminate\Support\Facades\Cache;
 
 class ReguladoraController extends Controller
@@ -32,7 +34,12 @@ class ReguladoraController extends Controller
      */
     public function create()
     {
-        return view('cadastros.reguladora.create-edit');
+        $estados = Cache::rememberForever('estados', function () {
+            return Estado::select(['uf', 'nome'])->orderBy('nome')->get();
+        });
+
+        return view('cadastros.reguladora.create-edit')
+            ->with('estados', $estados);
     }
 
     /**
@@ -43,10 +50,7 @@ class ReguladoraController extends Controller
      */
     public function store(StoreReguladoraRequest $request)
     {
-        $nome = Reguladora::create([
-            'nome' => $request->nome,
-            'cnpj' => $request->cnpj,
-        ])->nome;
+        $nome = Reguladora::createAndReturnName((object)$request->all());
 
         Cache::forget('reguladoras');
 
@@ -62,8 +66,13 @@ class ReguladoraController extends Controller
      */
     public function edit(Reguladora $reguladora)
     {
+        $estados = Cache::rememberForever('estados', function () {
+            return Estado::select(['uf', 'nome'])->orderBy('nome')->get();
+        });
+
         return view('cadastros.reguladora.create-edit')
-            ->with('reguladora', $reguladora);
+            ->with('reguladora', $reguladora)
+            ->with('estados', $estados);
     }
 
     /**
@@ -76,7 +85,7 @@ class ReguladoraController extends Controller
     public function update(UpdateReguladoraRequest $request, Reguladora $reguladora)
     {
         $reguladora->nome = $request->nome;
-        $reguladora->cnpj = $request->cnpj;
+        $reguladora->cnpj = ManipulacaoString::limpaString($request->cnpj);
         $reguladora->save();
 
         Cache::forget('reguladoras');
