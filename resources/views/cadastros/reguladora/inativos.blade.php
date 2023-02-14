@@ -34,12 +34,12 @@
                                     class="text-success"
                                     href="{{ route('cadastro.reguladora.inativar-ativar', $reguladora->id) }}"
                                     onclick="event.preventDefault();
-                                        ativar('reguladora-{{ $reguladora->id }}-form');"
+                                        ativar('reguladora-{{ $reguladora->id }}-form-inativar-ativar');"
                                 >
                                     <i class="fa-solid fa-check-to-slot"></i>
                                 </a>
                                 <form 
-                                    id="reguladora-{{ $reguladora->id }}-form" 
+                                    id="reguladora-{{ $reguladora->id }}-form-inativar-ativar" 
                                     action="{{ route('cadastro.reguladora.inativar-ativar', $reguladora->id) }}" 
                                     method="POST" 
                                     class="d-none"
