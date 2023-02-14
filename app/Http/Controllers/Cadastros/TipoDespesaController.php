@@ -17,8 +17,8 @@ class TipoDespesaController extends Controller
      */
     public function index()
     {
-        $tipoDespesas = Cache::rememberForever('tipoDespesas', function () {
-            return TipoDespesa::all(['id', 'nome', 'descricao']);
+        $tipoDespesas = Cache::rememberForever('tipo-despesas', function () {
+            return TipoDespesa::select(['id', 'nome', 'descricao'])->where('ativo', '=', true)->get();
         });
 
         return view('cadastros.tipo-despesa.index')
@@ -43,12 +43,12 @@ class TipoDespesaController extends Controller
      */
     public function store(StoreTipoDespesaRequest $request)
     {
+        Cache::forget('tipo-despesas');
+
         $nome = TipoDespesa::create([
             'nome' => $request->nome,
             'descricao' => $request->descricao,
         ])->nome;
-
-        Cache::forget('tipoDespesas');
 
         return to_route('cadastro.tipo-despesa.index')
             ->with('success', "Tipo de despesa '{$nome}' adicionada com sucesso.");
@@ -75,11 +75,11 @@ class TipoDespesaController extends Controller
      */
     public function update(UpdateTipoDespesaRequest $request, TipoDespesa $tipoDespesa)
     {
+        Cache::forget('tipo-despesas');
+        
         $tipoDespesa->nome = $request->nome;
         $tipoDespesa->descricao = $request->descricao;
         $tipoDespesa->save();
-
-        Cache::forget('tipoDespesas');
 
         return to_route('cadastro.tipo-despesa.index')
             ->with('success', "Tipo de despesa '{$tipoDespesa->nome}' atualizada com sucesso.");
@@ -93,11 +93,53 @@ class TipoDespesaController extends Controller
      */
     public function destroy(TipoDespesa $tipoDespesa)
     {
+        Cache::forget('tipo-despesas-inativas');
+        
         $tipoDespesa->delete();
-
-        Cache::forget('tipoDespesas');
         
         return to_route('cadastro.tipo-despesa.index')
             ->with('success', "Tipo de despesa '{$tipoDespesa->nome}' excluida com sucesso.");
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function inativos()
+    {
+        $tipoDespesas = Cache::rememberForever('tipo-despesas-inativas', function () {
+            return TipoDespesa::select(['id', 'nome', 'descricao'])->where('ativo', '=', false)->get();
+        });
+
+        return view('cadastros.tipo-despesa.inativos')
+            ->with('tipoDespesas', $tipoDespesas);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\TipoDespesa  $reguladora
+     * @return \Illuminate\Http\Response
+     */
+    public function inativarAtivar(TipoDespesa $tipoDespesa)
+    {
+        Cache::forget('tipo-despesas');
+        Cache::forget('tipo-despesas-inativas');
+
+        if($tipoDespesa->ativo) {
+            $tipoDespesa->ativo = false;
+
+            $messagem = "Tipo de despesa '{$tipoDespesa->nome}' inativada com sucesso.";
+        } else {
+            $tipoDespesa->ativo = true;
+
+            $messagem = "Tipo de despesa '{$tipoDespesa->nome}' ativada com sucesso.";
+        }
+        
+        $tipoDespesa->save();
+        
+        return to_route('cadastro.tipo-despesa.index')
+            ->with('success', $messagem);
     }
 }
