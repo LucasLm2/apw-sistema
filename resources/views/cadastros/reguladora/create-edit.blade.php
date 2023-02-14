@@ -133,25 +133,65 @@
                     </div>
                 </div>
 
-                <div class="row mb-3 d-none">
-                    <label for="telefone" class="col-md-4 col-form-label text-md-end">{{ __('Telefone') }}</label>
+                @if (isset($telefones) && $telefones != null)
+                    @foreach ($telefones as $telefone)
+                        <div class="row mb-3">
+                            <label class="col-md-4 col-form-label text-md-end">{{ __('Telefone') }}</label>
+        
+                            <div class="col-md-6">
+                                <div class="d-flex">
+                                    <input 
+                                        type="text" 
+                                        class="form-control telefone-mask @error('telefone') is-invalid @enderror" 
+                                        name="telefones[]" 
+                                        value="{{ isset($telefone) ? $telefone : old('telefone') }}"
+                                    >
+                                    <button type="button" class="btn btn-success ms-2" onclick="duplicarCampos(this, 'destino-telefone');">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger ms-2" onclick="removerCampo(this)">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button> 
+                                </div>
+                                
+                                @error('telefone')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="row mb-3">
+                        <label class="col-md-4 col-form-label text-md-end">{{ __('Telefone') }}</label>
 
-                    <div class="col-md-6">
-                        <input 
-                            id="telefone" 
-                            type="text" 
-                            class="form-control @error('telefone') is-invalid @enderror" 
-                            name="telefone" 
-                            value="{{ isset($reguladora->telefone) ? $reguladora->telefone : old('telefone') }}"
-                            data-inputmask-regex="\([0-9]{2}\) [0-9]{4,5}-[0-9]{4}"
-                        >
-
-                        @error('telefone')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <input 
+                                    type="text" 
+                                    class="form-control telefone-mask @error('telefone') is-invalid @enderror" 
+                                    name="telefones[]" 
+                                    value="{{ isset($telefone) ? $telefone : old('telefone') }}"
+                                >
+                                <button type="button" class="btn btn-success ms-2" onclick="duplicarCampos(this, 'destino-telefone');">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger ms-2" onclick="removerCampo(this)">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button> 
+                            </div>
+                            
+                            @error('telefone')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
                     </div>
+                @endif
+
+                <div id="destino-telefone">
                 </div>
                 
                 <div class="row mb-3">
@@ -324,7 +364,8 @@
 
 @section('scripts')
     <script type="module">
-        adicionarMascara(document.querySelectorAll("input"));
+        mascaraTelefoneCelular('.telefone-mask');
+        mascaraPorAtributo(document.querySelectorAll("input"));
         @if (request()->routeIs('cadastro.reguladora.edit'))
             await buscarMunicipios('{!! $reguladora->estado !!}');
             document.getElementById('municipio').value = '{!! $reguladora->municipio !!}';

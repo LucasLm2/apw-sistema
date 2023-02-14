@@ -25,7 +25,7 @@ class Reguladora extends Model
         'endereco_id'
     ];
 
-    public static function findWithEndereco($id): Reguladora|null
+    public static function findWithEndereco($id): ?Reguladora
     {
         return Reguladora::select(
                 'reguladoras.id',
@@ -59,14 +59,20 @@ class Reguladora extends Model
                 $dadosEndereco = Reguladora::formataDadosEndereco($dados);
                 $enderecoId = Endereco::createAndReturnId($dadosEndereco);
             }
-            
-            return Reguladora::create([
+
+            $reguladora = Reguladora::create([
                 'nome' => $dados->nome,
                 'cnpj' => ManipulacaoString::limpaString($dados->cnpj),
                 'inscricao_estadual' => $dados->inscricao_estadual,
                 'site' => $dados->site,
                 'endereco_id' => $enderecoId
-            ])->nome;
+            ]);
+
+            if(count($dados?->telefones) > 0) {
+                Telefone::massInsert($dados->telefones, 'reguladoras', $reguladora->id);
+            }
+            
+            return $reguladora->nome;
 
         }, 5);
 
@@ -83,5 +89,45 @@ class Reguladora extends Model
             'numero' => $dados->numero,
             'complemento' => $dados->complemento
         ];
+    }
+
+    public static function updateAndReturnName(Reguladora $reguladora, object $dados): string
+    {
+        $nome = DB::transaction(function () use($dados, $reguladora) {
+            
+            $reguladora->nome = $dados->nome;
+            $reguladora->cnpj = ManipulacaoString::limpaString($dados->cnpj);
+            $reguladora->inscricao_estadual = $dados->inscricao_estadual;
+            $reguladora->site = $dados->site;
+
+            Telefone::massDelete('reguladoras', $reguladora->id);
+            if(isset($dados->telefones) && count($dados->telefones) > 0) {
+                Telefone::massInsert($dados->telefones, 'reguladoras', $reguladora->id);
+            }
+    
+            if($dados->cep == null) {
+                $reguladora->endereco_id = null;
+                $reguladora->save();
+
+                return $reguladora->nome;
+            }
+
+            if($reguladora->endereco_id == null) {
+                $idEndereco = Endereco::createAndReturnId($dados);
+                $reguladora->endereco_id = $idEndereco;
+    
+                $reguladora->save();
+
+                return $reguladora->nome;
+            }
+        
+            Endereco::edit($dados, $reguladora->endereco_id);
+    
+            $reguladora->save();
+
+            return $reguladora->nome;
+        }, 5);
+
+        return $nome;
     }
 }
