@@ -43,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
     // Cadastros
     Route::prefix('cadastro')->group(function () {
         Route::name('cadastro.')->group(function () {
+
             Route::resource('reguladora', ReguladoraController::class)->except('show');
             Route::prefix('/reguladora')->group(function () {
                 Route::name('reguladora.')->group(function () {
@@ -53,20 +54,41 @@ Route::middleware(['auth'])->group(function () {
             });
 
             Route::resource('seguradora', SeguradoraController::class)->except('show');
-            Route::put('/seguradora/{seguradora}/inativar-ativar', [SeguradoraController::class, 'inativarAtivar'])
-                ->name('seguradora.inativar-ativar');
+            Route::prefix('/seguradora')->group(function () {
+                Route::name('seguradora.')->group(function () {
+                    Route::get('/inativos', [SeguradoraController::class, 'inativos'])->name('inativos');
+                    Route::put('/{seguradora}/inativar-ativar', [SeguradoraController::class, 'inativarAtivar'])
+                        ->name('inativar-ativar');
+                });
+            });
+
 
             Route::resource('segurado', SeguradoController::class)->except('show');
-            Route::put('/segurado/{segurado}/inativar-ativar', [SeguradoController::class, 'inativarAtivar'])
-                ->name('segurado.inativar-ativar');
-
+            Route::prefix('/segurado')->group(function () {
+                Route::name('segurado.')->group(function () {
+                    Route::get('/inativos', [SeguradoController::class, 'inativos'])->name('inativos');
+                    Route::put('/{segurado}/inativar-ativar', [SeguradoController::class, 'inativarAtivar'])
+                        ->name('inativar-ativar');
+                });
+            });
+            
             Route::resource('tipo-despesa', TipoDespesaController::class)->except('show');
-            Route::put('/tipo-despesa/{tipoDespesa}/inativar-ativar', [TipoDespesaController::class, 'inativarAtivar'])
-                ->name('tipo-despesa.inativar-ativar');
+            Route::prefix('/tipo-despesa')->group(function () {
+                Route::name('tipo-despesa.')->group(function () {
+                    Route::get('/inativos', [TipoDespesaController::class, 'inativos'])->name('inativos');
+                    Route::put('/{tipoDespesa}/inativar-ativar', [TipoDespesaController::class, 'inativarAtivar'])
+                        ->name('inativar-ativar');
+                });
+            });
 
             Route::resource('tipo-servico', TipoServicoController::class)->except('show');
-            Route::put('/tipo-servico/{tipoServico}/inativar-ativar', [TipoServicoController::class, 'inativarAtivar'])
-                ->name('tipo-servico.inativar-ativar');
+            Route::prefix('/tipo-servico')->group(function () {
+                Route::name('tipo-servico.')->group(function () {
+                    Route::get('/inativos', [TipoServicoController::class, 'inativos'])->name('inativos');
+                    Route::put('/{tipoServico}/inativar-ativar', [TipoServicoController::class, 'inativarAtivar'])
+                        ->name('inativar-ativar');
+                });
+            });
         });
     });
 });
