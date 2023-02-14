@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Cadastros;
 
 use App\Http\Controllers\Controller;
 use App\Models\Segurado;
-use App\Http\Requests\StoreSeguradoRequest;
-use App\Http\Requests\UpdateSeguradoRequest;
+use App\Http\Requests\StoreReguladoraRequest;
+use App\Http\Requests\UpdateReguladoraRequest;
+use App\Models\Email;
+use App\Models\Endereco\Estado;
+use App\Models\Telefone;
 use Illuminate\Support\Facades\Cache;
 
 class SeguradoController extends Controller
@@ -17,7 +20,12 @@ class SeguradoController extends Controller
      */
     public function index()
     {
-        return view('cadastros.segurado.index');
+        $segurados = Cache::rememberForever('segurados', function () {
+            return Segurado::select(['id', 'nome', 'cnpj'])->where('ativo', '=', true)->get();
+        });
+
+        return view('cadastros.segurado.index')
+            ->with('segurados', $segurados);
     }
 
     /**
@@ -27,7 +35,12 @@ class SeguradoController extends Controller
      */
     public function create()
     {
-        //
+        $estados = Cache::rememberForever('estados', function () {
+            return Estado::select(['uf', 'nome'])->orderBy('nome')->get();
+        });
+
+        return view('cadastros.segurado.create-edit')
+            ->with('estados', $estados);
     }
 
     /**
@@ -36,43 +49,54 @@ class SeguradoController extends Controller
      * @param  \App\Http\Requests\StoreFornecedorRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSeguradoRequest $request)
+    public function store(StoreReguladoraRequest $request)
     {
-        //
-    }
+        Cache::forget('segurados');
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Segurado  $segurado
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Segurado $segurado)
-    {
-        //
+        $nome = Segurado::createAndReturnName((object)$request->all());
+
+        return to_route('cadastro.segurado.index')
+            ->with('success', "Segurado '{$nome}' adicionado com sucesso.");
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Segurado  $segurado
+     * @param  int  $segurado
      * @return \Illuminate\Http\Response
      */
-    public function edit(Segurado $segurado)
+    public function edit(int $segurado)
     {
-        //
+        $segurado = Segurado::findWithEndereco($segurado);
+        $telefones = Telefone::allWithReference('segurados', $segurado->id);
+        $emails = Email::allWithReference('segurados', $segurado->id);
+        
+        $estados = Cache::rememberForever('estados', function () {
+            return Estado::select(['uf', 'nome'])->orderBy('nome')->get();
+        });
+
+        return view('cadastros.segurado.create-edit')
+            ->with('segurado', $segurado)
+            ->with('estados', $estados)
+            ->with('telefones', $telefones)
+            ->with('emails',  $emails);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateSeguradoRequest  $request
+     * @param  \App\Http\Requests\UpdateReguladoraRequest  $request
      * @param  \App\Models\Segurado  $segurado
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSeguradoRequest $request, Segurado $segurado)
+    public function update(UpdateReguladoraRequest $request, Segurado $segurado)
     {
-        //
+        Cache::forget('segurados');
+
+        $nome = Segurado::updateAndReturnName($segurado, (object)$request->all());
+
+        return to_route('cadastro.segurado.index')
+            ->with('success', "Segurado '{$nome}' atualizado com sucesso.");
     }
 
     /**
@@ -83,7 +107,12 @@ class SeguradoController extends Controller
      */
     public function destroy(Segurado $segurado)
     {
-        //
+        Cache::forget('segurados-inativas');
+
+        $segurado->delete();
+        
+        return to_route('cadastro.segurado.inativos')
+            ->with('success', "Segurado '{$segurado->nome}' excluido com sucesso.");
     }
 
     /**
@@ -93,24 +122,24 @@ class SeguradoController extends Controller
      */
     public function inativos()
     {
-        $segurados = Cache::rememberForever('segurados-inativos', function () {
+        $reguladorasInativas = Cache::rememberForever('segurados-inativas', function () {
             return Segurado::select(['id', 'nome', 'cnpj'])->where('ativo', '=', false)->get();
         });
 
         return view('cadastros.segurado.inativos')
-            ->with('segurados', $segurados);
+            ->with('segurados', $reguladorasInativas);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Segurado  $reguladora
+     * @param  \App\Models\Segurado  $segurado
      * @return \Illuminate\Http\Response
      */
     public function inativarAtivar(Segurado $segurado)
     {
         Cache::forget('segurados');
-        Cache::forget('segurados-inativos');
+        Cache::forget('segurados-inativas');
 
         if($segurado->ativo) {
             $segurado->ativo = false;
