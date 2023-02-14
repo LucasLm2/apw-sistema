@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers\Cadastros;
 
-use App\Helpers\ManipulacaoString;
 use App\Http\Controllers\Controller;
 use App\Models\Reguladora;
 use App\Http\Requests\StoreReguladoraRequest;
 use App\Http\Requests\UpdateReguladoraRequest;
-use App\Models\Endereco\Bairro;
-use App\Models\Endereco\Endereco;
+use App\Models\Email;
 use App\Models\Endereco\Estado;
-use App\Models\Endereco\Rua;
 use App\Models\Telefone;
 use Illuminate\Support\Facades\Cache;
 
@@ -72,6 +69,7 @@ class ReguladoraController extends Controller
     {
         $reguladora = Reguladora::findWithEndereco($reguladora);
         $telefones = Telefone::allWithReference('reguladoras', $reguladora->id);
+        $emails = Email::allWithReference('reguladoras', $reguladora->id);
         
         $estados = Cache::rememberForever('estados', function () {
             return Estado::select(['uf', 'nome'])->orderBy('nome')->get();
@@ -80,7 +78,8 @@ class ReguladoraController extends Controller
         return view('cadastros.reguladora.create-edit')
             ->with('reguladora', $reguladora)
             ->with('estados', $estados)
-            ->with('telefones', $telefones);
+            ->with('telefones', $telefones)
+            ->with('emails',  $emails);
     }
 
     /**
@@ -112,7 +111,7 @@ class ReguladoraController extends Controller
 
         $reguladora->delete();
         
-        return to_route('cadastro.reguladora.index')
+        return to_route('cadastro.reguladora.inativos')
             ->with('success', "Reguladora '{$reguladora->nome}' excluida com sucesso.");
     }
 

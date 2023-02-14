@@ -68,8 +68,12 @@ class Reguladora extends Model
                 'endereco_id' => $enderecoId
             ]);
 
-            if(count($dados?->telefones) > 0) {
+            if(isset($dados->telefones) && count($dados->telefones) > 0) {
                 Telefone::massInsert($dados->telefones, 'reguladoras', $reguladora->id);
+            }
+
+            if(isset($dados->emails) && count($dados->emails) > 0) {
+                Email::massInsert($dados->emails, 'reguladoras', $reguladora->id);
             }
             
             return $reguladora->nome;
@@ -103,6 +107,11 @@ class Reguladora extends Model
             Telefone::massDelete('reguladoras', $reguladora->id);
             if(isset($dados->telefones) && count($dados->telefones) > 0) {
                 Telefone::massInsert($dados->telefones, 'reguladoras', $reguladora->id);
+            }
+
+            Email::massDelete('reguladoras', $reguladora->id);
+            if(isset($dados->emails) && count($dados->emails) > 0) {
+                Email::massInsert($dados->emails, 'reguladoras', $reguladora->id);
             }
     
             if($dados->cep == null) {

@@ -113,27 +113,68 @@
                     </div>
                 </div>
 
-                <div class="row mb-3 d-none">
-                    <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
+                @if (isset($emails) && count($emails) > 0)
+                    @foreach ($emails as $email)
+                        <div class="row mb-3">
+                            <label class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
+        
+                            <div class="col-md-6">
+                                <div class="d-flex">
+                                    <input 
+                                        type="text" 
+                                        class="form-control @error('email->email') is-invalid @enderror" 
+                                        name="emails[]" 
+                                        value="{{ isset($email->email) ? $email->email : old('email->email') }}"
+                                    >
+                                    <button type="button" class="btn btn-success ms-2" onclick="duplicarCampos(this, 'destino-email');">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger ms-2" onclick="removerCampo(this)">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button> 
+                                </div>
+                                
+                                @error('email->email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="row mb-3">
+                        <label class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
 
-                    <div class="col-md-6">
-                        <input 
-                            id="email" 
-                            type="email" 
-                            class="form-control @error('email') is-invalid @enderror" 
-                            name="email" 
-                            value="{{ isset($reguladora->email) ? $reguladora->email : old('email') }}"
-                        >
-
-                        @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <input 
+                                    type="email" 
+                                    class="form-control @error('email') is-invalid @enderror" 
+                                    name="emails[]" 
+                                    value="{{ isset($email) ? $email : old('email') }}"
+                                >
+                                <button type="button" class="btn btn-success ms-2" onclick="duplicarCampos(this, 'destino-email');">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger ms-2" onclick="removerCampo(this)">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button> 
+                            </div>
+                            
+                            @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
                     </div>
-                </div>
+                @endif
 
-                @if (isset($telefones) && $telefones != null)
+                <div id="destino-email">
+                </div>
+                
+                @if (isset($telefones) && count($telefones) > 0)
                     @foreach ($telefones as $telefone)
                         <div class="row mb-3">
                             <label class="col-md-4 col-form-label text-md-end">{{ __('Telefone') }}</label>
@@ -144,7 +185,7 @@
                                         type="text" 
                                         class="form-control telefone-mask @error('telefone') is-invalid @enderror" 
                                         name="telefones[]" 
-                                        value="{{ isset($telefone) ? $telefone : old('telefone') }}"
+                                        value="{{ isset($telefone->numero) ? $telefone->numero : old('telefone->numero') }}"
                                     >
                                     <button type="button" class="btn btn-success ms-2" onclick="duplicarCampos(this, 'destino-telefone');">
                                         <i class="fa-solid fa-plus"></i>

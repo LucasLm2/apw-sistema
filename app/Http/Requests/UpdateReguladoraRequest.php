@@ -80,6 +80,16 @@ class UpdateReguladoraRequest extends FormRequest
                 'nullable', 
                 'string',
                 'max:255'
+            ],
+            'telefones.*' => [
+                'nullable',
+                'string',
+                'celular_com_ddd'
+            ],
+            'emails.*' => [
+                'nullable',
+                'string',
+                'email'
             ]
         ];
     }

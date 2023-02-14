@@ -88,6 +88,11 @@ class StoreReguladoraRequest extends FormRequest
                 'nullable',
                 'string',
                 'celular_com_ddd'
+            ],
+            'emails.*' => [
+                'nullable',
+                'string',
+                'email'
             ]
         ];
     }
