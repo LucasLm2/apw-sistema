@@ -1,5 +1,13 @@
-function adicionarMascara(campos) {
+function mascaraPorAtributo(campos) {
     Inputmask().mask(campos);
 }
 
-export default adicionarMascara;
+function mascaraTelefoneCelular(seletor) {
+    Inputmask(
+        { 
+            mask: () => ["(99) 9999-9999", "(99) 99999-9999"]
+        }
+    ).mask(document.querySelectorAll(seletor));
+}
+
+export {mascaraPorAtributo, mascaraTelefoneCelular};

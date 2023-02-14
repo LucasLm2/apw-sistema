@@ -13,8 +13,13 @@ window.inativar = inativar;
 import ativar from './funcoes/ativar';
 window.ativar = ativar;
 
-import adicionarMascara from './funcoes/adicionar-mascara';
-window.adicionarMascara = adicionarMascara;
+import * as mask  from './funcoes/adicionar-mascara';
+window.mascaraPorAtributo = mask.mascaraPorAtributo;
+window.mascaraTelefoneCelular = mask.mascaraTelefoneCelular;
+
+import * as adicionarRemoverCampos from './funcoes/adicionar-remover-campos';
+window.duplicarCampos = adicionarRemoverCampos.duplicarCampos;
+window.removerCampo = adicionarRemoverCampos.removerCampo;
 
 import * as pesquisa from './preencherCep';
 window.pesquisaCep = pesquisa.pesquisaCep;
