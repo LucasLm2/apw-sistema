@@ -5,13 +5,10 @@
     <div class="card">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-                <div>{{ __('Reguladoras') }}</div>
+                <div>{{ __('Reguladoras Inativas') }}</div>
                 <div>
-                    <a href="{{ route('cadastro.reguladora.create') }}" class="btn btn-primary">
-                        {{ __('New') }}
-                    </a>
-                    <a href="{{ route('cadastro.reguladora.inativos') }}" class="btn btn-secondary">
-                        {{ __('Inativos') }}
+                    <a href="{{ route('cadastro.reguladora.index') }}" class="btn btn-primary">
+                        {{ __('Return') }}
                     </a>
                 </div>
             </div>
@@ -23,8 +20,8 @@
                     <tr>
                         <th class="col-3">{{ __('Name') }}</th>
                         <th class="col-8">{{ __('CNPJ') }}</th>
-                        <th class="col-1 text-center">{{ __('Edit') }}</th>
-                        <th class="col-1 text-center">{{ __('Inativar') }}</th>
+                        <th class="col-1 text-center">{{ __('Ativar') }}</th>
+                        <th class="col-1 text-center">{{ __('Delete') }}</th>
                     </tr>
                 </thead>
                 <tbody>        
@@ -35,28 +32,39 @@
                             <td class="text-center">
                                 <a 
                                     class="text-success"
-                                    href="{{ route('cadastro.reguladora.edit', $reguladora->id) }}"
-                                >
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
-                            </td>
-                            <td class="text-center">
-                                <a 
-                                    class="text-danger"
                                     href="{{ route('cadastro.reguladora.inativar-ativar', $reguladora->id) }}"
                                     onclick="event.preventDefault();
-                                        inativar('reguladora-{{ $reguladora->id }}-form-inativar-ativar');"
+                                        ativar('reguladora-{{ $reguladora->id }}-form');"
                                 >
-                                    <i class="fa-solid fa-delete-left"></i>
+                                    <i class="fa-solid fa-check-to-slot"></i>
                                 </a>
                                 <form 
-                                    id="reguladora-{{ $reguladora->id }}-form-inativar-ativar" 
+                                    id="reguladora-{{ $reguladora->id }}-form" 
                                     action="{{ route('cadastro.reguladora.inativar-ativar', $reguladora->id) }}" 
                                     method="POST" 
                                     class="d-none"
                                 >
                                     @csrf
                                     @method('PUT');
+                                </form>
+                            </td>
+                            <td class="text-center">
+                                <a 
+                                    class="text-danger"
+                                    href="{{ route('cadastro.reguladora.destroy', $reguladora->id) }}"
+                                    onclick="event.preventDefault();
+                                        excluir('reguladora-{{ $reguladora->id }}-form');"
+                                >
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                                <form 
+                                    id="reguladora-{{ $reguladora->id }}-form" 
+                                    action="{{ route('cadastro.reguladora.destroy', $reguladora->id) }}" 
+                                    method="POST" 
+                                    class="d-none"
+                                >
+                                    @csrf
+                                    @method('DELETE');
                                 </form>
                             </td>
                         </tr>

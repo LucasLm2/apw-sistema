@@ -23,7 +23,7 @@ class ReguladoraController extends Controller
     public function index()
     {
         $reguladoras = Cache::rememberForever('reguladoras', function () {
-            return Reguladora::all(['id', 'nome', 'cnpj']);
+            return Reguladora::select(['id', 'nome', 'cnpj'])->where('ativo', '=', true)->get();
         });
 
         return view('cadastros.reguladora.index')
@@ -69,7 +69,7 @@ class ReguladoraController extends Controller
      */
     public function edit(int $reguladora)
     {
-        $reguladora = Reguladora::findLeftJoinEndereco($reguladora);
+        $reguladora = Reguladora::findWithEndereco($reguladora);
         
         $estados = Cache::rememberForever('estados', function () {
             return Estado::select(['uf', 'nome'])->orderBy('nome')->get();
@@ -147,11 +147,53 @@ class ReguladoraController extends Controller
      */
     public function destroy(Reguladora $reguladora)
     {
-        $reguladora->delete();
-
         Cache::forget('reguladoras');
+
+        $reguladora->delete();
         
         return to_route('cadastro.reguladora.index')
             ->with('success', "Reguladora '{$reguladora->nome}' excluida com sucesso.");
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function inativos()
+    {
+        $reguladorasInativas = Cache::rememberForever('reguladoras-inativas', function () {
+            return Reguladora::select(['id', 'nome', 'cnpj'])->where('ativo', '=', false)->get();
+        });
+
+        return view('cadastros.reguladora.inativos')
+            ->with('reguladoras', $reguladorasInativas);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Reguladora  $reguladora
+     * @return \Illuminate\Http\Response
+     */
+    public function inativarAtivar(Reguladora $reguladora)
+    {
+        Cache::forget('reguladoras');
+        Cache::forget('reguladoras-inativas');
+
+        if($reguladora->ativo) {
+            $reguladora->ativo = false;
+
+            $messagem = "Reguladora '{$reguladora->nome}' inativada com sucesso.";
+        } else {
+            $reguladora->ativo = true;
+
+            $messagem = "Reguladora '{$reguladora->nome}' ativada com sucesso.";
+        }
+        
+        $reguladora->save();
+        
+        return to_route('cadastro.reguladora.index')
+            ->with('success', $messagem);
     }
 }
