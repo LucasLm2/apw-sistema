@@ -30,7 +30,7 @@
                 @endif
 
                 <div class="row mb-3">
-                    <label for="nome" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+                    <label for="nome" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}*</label>
 
                     <div class="col-md-6">
                         <input 
@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="descricao" class="col-md-4 col-form-label text-md-end">{{ __('CNPJ') }}</label>
+                    <label for="descricao" class="col-md-4 col-form-label text-md-end">{{ __('CNPJ') }}*</label>
 
                     <div class="col-md-6">
                         <input 
