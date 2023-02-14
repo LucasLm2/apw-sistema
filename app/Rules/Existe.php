@@ -26,7 +26,7 @@ class Existe implements InvokableRule
         }
 
         if($this->class::where($attribute, '=', $value)->exists()) {
-            $fail('Este :attribute já esta cadastrado.');
+            $fail('Este :attribute já esta cadastrado. Verifique se não esta inativado.');
         }
     }
 }
