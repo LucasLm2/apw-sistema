@@ -17,8 +17,8 @@ class TipoServicoController extends Controller
      */
     public function index()
     {
-        $tipoServicos = Cache::rememberForever('tipoServicos', function () {
-            return TipoServico::all(['id', 'nome', 'descricao']);
+        $tipoServicos = Cache::rememberForever('tipo-servicos', function () {
+            return TipoServico::select(['id', 'nome', 'descricao'])->where('ativo', '=', true)->get();
         });
 
         return view('cadastros.tipo-servico.index')
@@ -43,12 +43,12 @@ class TipoServicoController extends Controller
      */
     public function store(StoreTipoServicoRequest $request)
     {
+        Cache::forget('tipo-servicos');
+        
         $nome = TipoServico::create([
             'nome' => $request->nome,
             'descricao' => $request->descricao,
         ])->nome;
-
-        Cache::forget('tipoServicos');
 
         return to_route('cadastro.tipo-servico.index')
             ->with('success', "Tipo de servico '{$nome}' adicionado com sucesso.");
@@ -75,11 +75,11 @@ class TipoServicoController extends Controller
      */
     public function update(UpdateTipoServicoRequest $request, TipoServico $tipoServico)
     {
+        Cache::forget('tipo-servicos');
+
         $tipoServico->nome = $request->nome;
         $tipoServico->descricao = $request->descricao;
         $tipoServico->save();
-
-        Cache::forget('tipoServicos');
 
         return to_route('cadastro.tipo-servico.index')
             ->with('success', "Tipo de servico '{$tipoServico->nome}' atualizado com sucesso.");
@@ -93,11 +93,53 @@ class TipoServicoController extends Controller
      */
     public function destroy(TipoServico $tipoServico)
     {
-        $tipoServico->delete();
+        Cache::forget('tipo-servicos-inativos');
 
-        Cache::forget('tipoServicos');
+        $tipoServico->delete();
 
         return to_route('cadastro.tipo-servico.index')
             ->with('success', "Tipo de servico '{$tipoServico->nome}' excluido com sucesso.");
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function inativos()
+    {
+        $tipoServicos = Cache::rememberForever('tipo-servicos-inativos', function () {
+            return TipoServico::select(['id', 'nome', 'descricao'])->where('ativo', '=', false)->get();
+        });
+
+        return view('cadastros.tipo-servico.inativos')
+            ->with('tipoServicos', $tipoServicos);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\TipoServico  $reguladora
+     * @return \Illuminate\Http\Response
+     */
+    public function inativarAtivar(TipoServico $tipoServico)
+    {
+        Cache::forget('tipo-servicos');
+        Cache::forget('tipo-servicos-inativos');
+
+        if($tipoServico->ativo) {
+            $tipoServico->ativo = false;
+
+            $messagem = "Tipo de serviço '{$tipoServico->nome}' inativado com sucesso.";
+        } else {
+            $tipoServico->ativo = true;
+
+            $messagem = "Tipo de serviço '{$tipoServico->nome}' ativado com sucesso.";
+        }
+        
+        $tipoServico->save();
+        
+        return to_route('cadastro.tipo-servico.index')
+            ->with('success', $messagem);
     }
 }
