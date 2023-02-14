@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('inscricao_estadual')->nullable();
             $table->string('site')->nullable();
             $table->unsignedBigInteger('endereco_id')->nullable();
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
 
             // Foreign keys
