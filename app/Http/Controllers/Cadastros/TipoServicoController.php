@@ -97,7 +97,7 @@ class TipoServicoController extends Controller
 
         $tipoServico->delete();
 
-        return to_route('cadastro.tipo-servico.index')
+        return to_route('cadastro.tipo-servico.inativos')
             ->with('success', "Tipo de servico '{$tipoServico->nome}' excluido com sucesso.");
     }
 

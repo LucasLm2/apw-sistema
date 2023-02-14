@@ -97,7 +97,7 @@ class TipoDespesaController extends Controller
         
         $tipoDespesa->delete();
         
-        return to_route('cadastro.tipo-despesa.index')
+        return to_route('cadastro.tipo-despesa.inativos')
             ->with('success', "Tipo de despesa '{$tipoDespesa->nome}' excluida com sucesso.");
     }
 
