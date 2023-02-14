@@ -147,7 +147,7 @@ class ReguladoraController extends Controller
      */
     public function destroy(Reguladora $reguladora)
     {
-        Cache::forget('reguladoras');
+        Cache::forget('reguladoras-inativas');
 
         $reguladora->delete();
         
