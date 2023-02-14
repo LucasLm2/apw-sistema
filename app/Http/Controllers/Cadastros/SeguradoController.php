@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Segurado;
 use App\Http\Requests\StoreSeguradoRequest;
 use App\Http\Requests\UpdateSeguradoRequest;
+use Illuminate\Support\Facades\Cache;
 
 class SeguradoController extends Controller
 {
@@ -83,5 +84,47 @@ class SeguradoController extends Controller
     public function destroy(Segurado $segurado)
     {
         //
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function inativos()
+    {
+        $segurados = Cache::rememberForever('segurados-inativos', function () {
+            return Segurado::select(['id', 'nome', 'cnpj'])->where('ativo', '=', false)->get();
+        });
+
+        return view('cadastros.segurado.inativos')
+            ->with('segurados', $segurados);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Segurado  $reguladora
+     * @return \Illuminate\Http\Response
+     */
+    public function inativarAtivar(Segurado $segurado)
+    {
+        Cache::forget('segurados');
+        Cache::forget('segurados-inativos');
+
+        if($segurado->ativo) {
+            $segurado->ativo = false;
+
+            $messagem = "Segurado '{$segurado->nome}' inativado com sucesso.";
+        } else {
+            $segurado->ativo = true;
+
+            $messagem = "Segurado '{$segurado->nome}' ativado com sucesso.";
+        }
+        
+        $segurado->save();
+        
+        return to_route('cadastro.segurado.index')
+            ->with('success', $messagem);
     }
 }
