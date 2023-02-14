@@ -25,7 +25,7 @@ class Reguladora extends Model
         'endereco_id'
     ];
 
-    public static function findLeftJoinEndereco($id): Reguladora|null
+    public static function findWithEndereco($id): Reguladora|null
     {
         return Reguladora::select(
                 'reguladoras.id',
