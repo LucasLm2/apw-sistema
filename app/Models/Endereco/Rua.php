@@ -21,7 +21,7 @@ class Rua extends Model
         'bairro_id',
     ];
 
-    public static function getIdByNome(string $nome): int|null
+    public static function getIdByNome(string $nome): ?int
     {
         return Rua::select('id')->where('nome', '=', $nome)->first()?->id;
     }

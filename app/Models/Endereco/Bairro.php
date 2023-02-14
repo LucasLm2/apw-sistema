@@ -21,7 +21,7 @@ class Bairro extends Model
         'municipio_cod_ibge',
     ];
 
-    public static function getIdByNome(string $nome): int|null
+    public static function getIdByNome(string $nome): ?int
     {
         return Bairro::select('id')->where('nome', '=', $nome)->first()?->id;
     }

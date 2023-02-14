@@ -14,12 +14,12 @@ class Municipio extends Model
     protected $primaryKey = 'cod_ibge';
     public $incrementing = false;
 
-    public static function getIdByNome(string $nome): int|null
+    public static function getIdByNome(string $nome): ?int
     {
         return Municipio::select('cod_ibge')->where('nome', '=', $nome)->first()?->id;
     }
 
-    public static function findByEstado(string $estado): Collection|null
+    public static function findByEstado(string $estado): ?Collection
     {
         return Municipio::select('municipios.cod_ibge', 'municipios.nome')
             ->join('estados', 'estados.cod_ibge', '=', 'municipios.estado_cod_ibge')
