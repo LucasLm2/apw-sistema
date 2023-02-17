@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Segurado extends Model
+class Cliente extends Model
 {
     use HasFactory;
 
@@ -25,14 +25,14 @@ class Segurado extends Model
         'endereco_id'
     ];
 
-    public static function findWithEndereco($id): ?Segurado
+    public static function findWithEndereco($id): ?Cliente
     {
-        return Segurado::select(
-                'segurados.id',
-                'segurados.nome',
-                'segurados.cnpj',
-                'segurados.inscricao_estadual',
-                'segurados.site',
+        return Cliente::select(
+                'clientes.id',
+                'clientes.nome',
+                'clientes.cnpj',
+                'clientes.inscricao_estadual',
+                'clientes.site',
                 'enderecos.id as endereco_id', 
                 'enderecos.cep', 
                 'enderecos.numero',
@@ -41,12 +41,12 @@ class Segurado extends Model
                 'bairros.nome as bairro', 
                 'municipios.cod_ibge as municipio',
                 'estados.uf as estado'
-            )->leftJoin('enderecos', 'enderecos.id', '=', 'segurados.endereco_id')
+            )->leftJoin('enderecos', 'enderecos.id', '=', 'clientes.endereco_id')
             ->leftJoin('ruas', 'ruas.id', '=', 'enderecos.rua_id')
             ->leftJoin('bairros', 'bairros.id', '=', 'enderecos.bairro_id')
             ->leftJoin('municipios', 'municipios.cod_ibge', '=', 'enderecos.municipio_cod_ibge')
             ->leftJoin('estados', 'estados.cod_ibge', '=', 'municipios.estado_cod_ibge')
-            ->where('segurados.id', $id)
+            ->where('clientes.id', $id)
             ->first();
     }
 
@@ -56,11 +56,11 @@ class Segurado extends Model
             
             $enderecoId = null;
             if($dados->cep != '') {
-                $dadosEndereco = Segurado::formataDadosEndereco($dados);
+                $dadosEndereco = Cliente::formataDadosEndereco($dados);
                 $enderecoId = Endereco::createAndReturnId($dadosEndereco);
             }
 
-            $segurado = Segurado::create([
+            $cliente = Cliente::create([
                 'nome' => $dados->nome,
                 'cnpj' => ManipulacaoString::limpaString($dados->cnpj),
                 'inscricao_estadual' => $dados->inscricao_estadual,
@@ -69,14 +69,14 @@ class Segurado extends Model
             ]);
 
             if(isset($dados->telefones) && count($dados->telefones) > 0) {
-                Telefone::massInsert($dados->telefones, 'segurados', $segurado->id);
+                Telefone::massInsert($dados->telefones, 'clientes', $cliente->id);
             }
 
             if(isset($dados->emails) && count($dados->emails) > 0) {
-                Email::massInsert($dados->emails, 'segurados', $segurado->id);
+                Email::massInsert($dados->emails, 'clientes', $cliente->id);
             }
             
-            return $segurado->nome;
+            return $cliente->nome;
 
         }, 5);
 
@@ -95,46 +95,46 @@ class Segurado extends Model
         ];
     }
 
-    public static function updateAndReturnName(Segurado $segurado, object $dados): string
+    public static function updateAndReturnName(Cliente $cliente, object $dados): string
     {
-        $nome = DB::transaction(function () use($dados, $segurado) {
+        $nome = DB::transaction(function () use($dados, $cliente) {
             
-            $segurado->nome = $dados->nome;
-            $segurado->cnpj = ManipulacaoString::limpaString($dados->cnpj);
-            $segurado->inscricao_estadual = $dados->inscricao_estadual;
-            $segurado->site = $dados->site;
+            $cliente->nome = $dados->nome;
+            $cliente->cnpj = ManipulacaoString::limpaString($dados->cnpj);
+            $cliente->inscricao_estadual = $dados->inscricao_estadual;
+            $cliente->site = $dados->site;
 
-            Telefone::massDelete('segurados', $segurado->id);
+            Telefone::massDelete('clientes', $cliente->id);
             if(isset($dados->telefones) && count($dados->telefones) > 0) {
-                Telefone::massInsert($dados->telefones, 'segurados', $segurado->id);
+                Telefone::massInsert($dados->telefones, 'clientes', $cliente->id);
             }
 
-            Email::massDelete('segurados', $segurado->id);
+            Email::massDelete('clientes', $cliente->id);
             if(isset($dados->emails) && count($dados->emails) > 0) {
-                Email::massInsert($dados->emails, 'segurados', $segurado->id);
+                Email::massInsert($dados->emails, 'clientes', $cliente->id);
             }
     
             if($dados->cep == null) {
-                $segurado->endereco_id = null;
-                $segurado->save();
+                $cliente->endereco_id = null;
+                $cliente->save();
 
-                return $segurado->nome;
+                return $cliente->nome;
             }
 
-            if($segurado->endereco_id == null) {
+            if($cliente->endereco_id == null) {
                 $idEndereco = Endereco::createAndReturnId($dados);
-                $segurado->endereco_id = $idEndereco;
+                $cliente->endereco_id = $idEndereco;
     
-                $segurado->save();
+                $cliente->save();
 
-                return $segurado->nome;
+                return $cliente->nome;
             }
         
-            Endereco::edit($dados, $segurado->endereco_id);
+            Endereco::edit($dados, $cliente->endereco_id);
     
-            $segurado->save();
+            $cliente->save();
 
-            return $segurado->nome;
+            return $cliente->nome;
         }, 5);
 
         return $nome;

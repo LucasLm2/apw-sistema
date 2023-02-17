@@ -5,9 +5,9 @@
     <div class="card">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-                <div>{{ __('Novo segurado') }}</div>
+                <div>{{ __('Novo cliente') }}</div>
                 <div>
-                    <a href="{{ route('cadastro.segurado.index') }}" class="btn btn-primary">
+                    <a href="{{ route('cadastro.cliente.index') }}" class="btn btn-primary">
                         {{ __('Return') }}
                     </a>
                 </div>
@@ -18,15 +18,15 @@
             <form 
                 method="POST" 
                 action="{{ 
-                    request()->routeIs('cadastro.segurado.create') ?
-                    route('cadastro.segurado.store') : 
-                    route('cadastro.segurado.update', $segurado->id)
+                    request()->routeIs('cadastro.cliente.create') ?
+                    route('cadastro.cliente.store') : 
+                    route('cadastro.cliente.update', $cliente->id)
                 }}"
             >
                 @csrf
-                @if (request()->routeIs('cadastro.segurado.edit'))
+                @if (request()->routeIs('cadastro.cliente.edit'))
                     @method('PUT')
-                    <input type="hidden" name="endereco_id" value="{{ $segurado->endereco_id }}">
+                    <input type="hidden" name="endereco_id" value="{{ $cliente->endereco_id }}">
                 @endif
 
                 <div class="row mb-3">
@@ -38,7 +38,7 @@
                             type="text" 
                             class="form-control @error('nome') is-invalid @enderror" 
                             name="nome" 
-                            value="{{ isset($segurado->nome) ? $segurado->nome : old('nome') }}"
+                            value="{{ isset($cliente->nome) ? $cliente->nome : old('nome') }}"
                             required
                             autofocus
                         >
@@ -60,7 +60,7 @@
                             type="text" 
                             class="form-control @error('cnpj') is-invalid @enderror" 
                             name="cnpj" 
-                            value="{{ isset($segurado->cnpj) ? $segurado->cnpj : old('cnpj') }}"
+                            value="{{ isset($cliente->cnpj) ? $cliente->cnpj : old('cnpj') }}"
                             data-inputmask="'mask': '99.999.999/9999-99'"
                             required
                         >
@@ -82,7 +82,7 @@
                             type="text" 
                             class="form-control @error('inscricao_estadual') is-invalid @enderror" 
                             name="inscricao_estadual" 
-                            value="{{ isset($segurado->inscricao_estadual) ? $segurado->inscricao_estadual : old('inscricao_estadual') }}"
+                            value="{{ isset($cliente->inscricao_estadual) ? $cliente->inscricao_estadual : old('inscricao_estadual') }}"
                         >
 
                         @error('inscricao_estadual')
@@ -102,7 +102,7 @@
                             type="text" 
                             class="form-control @error('site') is-invalid @enderror" 
                             name="site" 
-                            value="{{ isset($segurado->site) ? $segurado->site : old('site') }}"
+                            value="{{ isset($cliente->site) ? $cliente->site : old('site') }}"
                         >
 
                         @error('site')
@@ -244,7 +244,7 @@
                             type="text" 
                             class="form-control @error('cep') is-invalid @enderror" 
                             name="cep" 
-                            value="{{ isset($segurado->cep) ? $segurado->cep : old('cep') }}"
+                            value="{{ isset($cliente->cep) ? $cliente->cep : old('cep') }}"
                             data-inputmask="'mask': '99.999-999'"
                             onblur="pesquisaCep(this.value)"
                         >
@@ -265,7 +265,7 @@
                             id="estado" 
                             class="form-select @error('estado') is-invalid @enderror" 
                             name="estado" 
-                            value="{{ isset($segurado->estado) ? $segurado->estado : old('estado') }}"
+                            value="{{ isset($cliente->estado) ? $cliente->estado : old('estado') }}"
                             onchange="buscarMunicipios(this.value)"
                         >
                             <option value="">Selecione...</option>
@@ -273,8 +273,8 @@
                                 <option 
                                     value="{{$estado->uf}}" 
                                     @selected(
-                                        isset($segurado->estado) ? 
-                                            $segurado->estado == $estado->uf : 
+                                        isset($cliente->estado) ? 
+                                            $cliente->estado == $estado->uf : 
                                             old('estado') == $estado->uf
                                         )
                                 >{{$estado->nome}}</option>
@@ -297,7 +297,7 @@
                             id="municipio" 
                             class="form-select @error('municipio') is-invalid @enderror" 
                             name="municipio" 
-                            value="{{ isset($segurado->municipio) ? $segurado->municipio : old('municipio') }}"
+                            value="{{ isset($cliente->municipio) ? $cliente->municipio : old('municipio') }}"
                         >
                             <option value="">Selecione...</option>
                         </select>
@@ -319,7 +319,7 @@
                             type="text" 
                             class="form-control @error('bairro') is-invalid @enderror" 
                             name="bairro"
-                            value="{{ isset($segurado->bairro) ? $segurado->bairro : old('bairro') }}" 
+                            value="{{ isset($cliente->bairro) ? $cliente->bairro : old('bairro') }}" 
                         >
 
                         @error('bairro')
@@ -339,7 +339,7 @@
                             type="text" 
                             class="form-control @error('rua') is-invalid @enderror" 
                             name="rua"
-                            value="{{ isset($segurado->rua) ? $segurado->rua : old('rua') }}" 
+                            value="{{ isset($cliente->rua) ? $cliente->rua : old('rua') }}" 
                         >
 
                         @error('rua')
@@ -359,7 +359,7 @@
                             type="text" 
                             class="form-control @error('numero') is-invalid @enderror"
                             name="numero"
-                            value="{{ isset($segurado->numero) ? $segurado->numero : old('numero') }}" 
+                            value="{{ isset($cliente->numero) ? $cliente->numero : old('numero') }}" 
                         >
 
                         @error('numero')
@@ -379,7 +379,7 @@
                             type="text" 
                             class="form-control @error('complemento') is-invalid @enderror" 
                             name="complemento"
-                            value="{{ isset($segurado->complemento) ? $segurado->complemento : old('complemento') }}" 
+                            value="{{ isset($cliente->complemento) ? $cliente->complemento : old('complemento') }}" 
                         >
 
                         @error('complemento')
@@ -407,9 +407,9 @@
     <script type="module">
         mascaraTelefoneCelular('.telefone-mask');
         mascaraPorAtributo(document.querySelectorAll("input"));
-        @if (request()->routeIs('cadastro.segurado.edit'))
-            await buscarMunicipios('{!! $segurado->estado !!}');
-            document.getElementById('municipio').value = '{!! $segurado->municipio !!}';
+        @if (request()->routeIs('cadastro.cliente.edit'))
+            await buscarMunicipios('{!! $cliente->estado !!}');
+            document.getElementById('municipio').value = '{!! $cliente->municipio !!}';
         @endif
     </script>
 @endsection

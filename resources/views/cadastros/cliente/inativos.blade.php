@@ -5,9 +5,9 @@
     <div class="card">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-                <div>{{ __('Segurados Inativos') }}</div>
+                <div>{{ __('Clientes Inativos') }}</div>
                 <div>
-                    <a href="{{ route('cadastro.segurado.index') }}" class="btn btn-primary">
+                    <a href="{{ route('cadastro.cliente.index') }}" class="btn btn-primary">
                         {{ __('Return') }}
                     </a>
                 </div>
@@ -25,22 +25,22 @@
                     </tr>
                 </thead>
                 <tbody>        
-                    @forelse ($segurados as $segurado) 
+                    @forelse ($clientes as $cliente) 
                         <tr>
-                            <td>{{ $segurado->nome }}</td>
-                            <td class="label-cnpj" data-inputmask="'mask': '99.999.999/9999-99'">{{ $segurado->cnpj }}</td>
+                            <td>{{ $cliente->nome }}</td>
+                            <td class="label-cnpj" data-inputmask="'mask': '99.999.999/9999-99'">{{ $cliente->cnpj }}</td>
                             <td class="text-center">
                                 <a 
                                     class="text-success"
-                                    href="{{ route('cadastro.segurado.inativar-ativar', $segurado->id) }}"
+                                    href="{{ route('cadastro.cliente.inativar-ativar', $cliente->id) }}"
                                     onclick="event.preventDefault();
-                                        ativar('segurado-{{ $segurado->id }}-form-inativar-ativar');"
+                                        ativar('cliente-{{ $cliente->id }}-form-inativar-ativar');"
                                 >
                                     <i class="fa-solid fa-check-to-slot"></i>
                                 </a>
                                 <form 
-                                    id="segurado-{{ $segurado->id }}-form-inativar-ativar" 
-                                    action="{{ route('cadastro.segurado.inativar-ativar', $segurado->id) }}" 
+                                    id="cliente-{{ $cliente->id }}-form-inativar-ativar" 
+                                    action="{{ route('cadastro.cliente.inativar-ativar', $cliente->id) }}" 
                                     method="POST" 
                                     class="d-none"
                                 >
@@ -51,15 +51,15 @@
                             <td class="text-center">
                                 <a 
                                     class="text-danger"
-                                    href="{{ route('cadastro.segurado.destroy', $segurado->id) }}"
+                                    href="{{ route('cadastro.cliente.destroy', $cliente->id) }}"
                                     onclick="event.preventDefault();
-                                        excluir('segurado-{{ $segurado->id }}-form');"
+                                        excluir('cliente-{{ $cliente->id }}-form');"
                                 >
                                     <i class="fa-solid fa-trash"></i>
                                 </a>
                                 <form 
-                                    id="segurado-{{ $segurado->id }}-form" 
-                                    action="{{ route('cadastro.segurado.destroy', $segurado->id) }}" 
+                                    id="cliente-{{ $cliente->id }}-form" 
+                                    action="{{ route('cadastro.cliente.destroy', $cliente->id) }}" 
                                     method="POST" 
                                     class="d-none"
                                 >

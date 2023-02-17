@@ -6,7 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Cadastros\ReguladoraController;
-use App\Http\Controllers\Cadastros\SeguradoController;
+use App\Http\Controllers\Cadastros\ClienteController;
 use App\Http\Controllers\Cadastros\SeguradoraController;
 use App\Http\Controllers\Cadastros\TipoDespesaController;
 use App\Http\Controllers\Cadastros\TipoServicoController;
@@ -63,11 +63,11 @@ Route::middleware(['auth'])->group(function () {
             });
 
 
-            Route::resource('segurado', SeguradoController::class)->except('show');
-            Route::prefix('/segurado')->group(function () {
-                Route::name('segurado.')->group(function () {
-                    Route::get('/inativos', [SeguradoController::class, 'inativos'])->name('inativos');
-                    Route::put('/{segurado}/inativar-ativar', [SeguradoController::class, 'inativarAtivar'])
+            Route::resource('cliente', ClienteController::class)->except('show');
+            Route::prefix('/cliente')->group(function () {
+                Route::name('cliente.')->group(function () {
+                    Route::get('/inativos', [ClienteController::class, 'inativos'])->name('inativos');
+                    Route::put('/{cliente}/inativar-ativar', [ClienteController::class, 'inativarAtivar'])
                         ->name('inativar-ativar');
                 });
             });

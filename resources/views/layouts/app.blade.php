@@ -63,10 +63,10 @@
                                     </li>
                                     <li>
                                         <a 
-                                            class="dropdown-item {{ request()->routeIs('cadastro.segurado.index') ? 'active':'' }}" 
-                                            href="{{ route('cadastro.segurado.index') }}"
+                                            class="dropdown-item {{ request()->routeIs('cadastro.cliente.index') ? 'active':'' }}" 
+                                            href="{{ route('cadastro.cliente.index') }}"
                                         >
-                                            {{ __('Segurado') }}
+                                            {{ __('Clientes') }}
                                         </a>
                                     </li>
                                     <li>
@@ -74,7 +74,7 @@
                                             class="dropdown-item {{ request()->routeIs('cadastro.seguradora.index') ? 'active':'' }}" 
                                             href="{{ route('cadastro.seguradora.index') }}"
                                         >
-                                            {{ __('Seguradora') }}
+                                            {{ __('Seguradoras') }}
                                         </a>
                                     </li>
                                     <li>

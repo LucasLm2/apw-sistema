@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Cadastros;
 
 use App\Http\Controllers\Controller;
 use App\Models\Seguradora;
-use App\Http\Requests\StoreReguladoraRequest;
-use App\Http\Requests\UpdateReguladoraRequest;
+use App\Http\Requests\StoreSeguradoraRequest;
+use App\Http\Requests\UpdateSeguradoraRequest;
 use App\Models\Email;
 use App\Models\Endereco\Estado;
 use App\Models\Telefone;
@@ -49,7 +49,7 @@ class SeguradoraController extends Controller
      * @param  \App\Http\Requests\StoreFornecedorRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreReguladoraRequest $request)
+    public function store(StoreSeguradoraRequest $request)
     {
         Cache::forget('seguradoras');
 
@@ -85,11 +85,11 @@ class SeguradoraController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateReguladoraRequest  $request
+     * @param  \App\Http\Requests\UpdateSeguradoraRequest  $request
      * @param  \App\Models\Seguradora  $seguradora
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateReguladoraRequest $request, Seguradora $seguradora)
+    public function update(UpdateSeguradoraRequest $request, Seguradora $seguradora)
     {
         Cache::forget('seguradoras');
 

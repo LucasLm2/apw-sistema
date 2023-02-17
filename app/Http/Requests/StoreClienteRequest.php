@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Segurado;
+use App\Models\Cliente;
 use App\Rules\Existe;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSeguradoRequest extends FormRequest
+class StoreClienteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -35,7 +35,7 @@ class StoreSeguradoRequest extends FormRequest
                 'string',
                 'formato_cnpj',
                 'cnpj',
-                new Existe(new Segurado())
+                new Existe(new Cliente())
             ],
             'inscricao_estadual' => [
                 'nullable',
