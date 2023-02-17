@@ -29,6 +29,7 @@ class StoreTipoServicoRequest extends FormRequest
                 'string',
             ],
             'descricao' => [
+                'nullable',
                 'string'
             ]
         ];

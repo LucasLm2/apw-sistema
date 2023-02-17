@@ -9,12 +9,9 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css">
 </head>
 <body>
     <input id="url-base" type="hidden" value="{{ config('app.url') }}">
@@ -134,7 +131,24 @@
         @if (session('success'))
             swal("Ok!", "{!! session('success') !!}", "success");
         @endif
+        new DataTable('.datatable', {
+            language: {
+                lengthMenu: 'Exibir registros _MENU_ por página',
+                zeroRecords: 'Nenhum registro encontrado!',
+                info: 'Mostrando a página _PAGE_ de _PAGES_',
+                infoEmpty: 'Não há registros disponíveis',
+                infoFiltered: '(filtrado do total de registros _MAX_)',
+                sSearch: 'Pesquisar',
+                oPaginate: {
+                    sNext:"Próximo",
+                    sPrevious:"Anterior"
+                }
+            }
+        });
     </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
     @yield('scripts')
 </body>
 </html>

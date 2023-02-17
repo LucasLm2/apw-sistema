@@ -83,8 +83,6 @@
                             class="form-control @error('nome_fantasia') is-invalid @enderror" 
                             name="nome_fantasia" 
                             value="{{ isset($reguladora->nome_fantasia) ? $reguladora->nome_fantasia : old('nome_fantasia') }}"
-                            required
-                            autofocus
                         >
 
                         @error('nome_fantasia')

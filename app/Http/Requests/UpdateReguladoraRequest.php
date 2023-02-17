@@ -30,6 +30,7 @@ class UpdateReguladoraRequest extends FormRequest
                 'max:255'
             ],
             'nome_fantasia' => [
+                'nullable',
                 'string',
                 'max:255'
             ],

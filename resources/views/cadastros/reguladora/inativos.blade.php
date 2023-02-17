@@ -15,18 +15,18 @@
         </div>
 
         <div class="card-body">
-            <table class="table table-sm table-striped table-hover">
+            <table class="table table-sm table-striped table-hover datatable">
                 <thead>
                     <tr>
                         <th class="col-5">{{ __('Razão Social') }}</th>
                         <th class="col-2">{{ __('CNPJ') }}</th>
                         <th class="col-4">{{ __('Nome Fantasia') }}</th>
-                        <th class="col-1 text-center">{{ __('Ativar') }}</th>
-                        <th class="col-1 text-center">{{ __('Delete') }}</th>
+                        <th class="col-1 text-center" data-orderable="false">{{ __('Ativar') }}</th>
+                        <th class="col-1 text-center" data-orderable="false">{{ __('Delete') }}</th>
                     </tr>
                 </thead>
                 <tbody>        
-                    @forelse ($reguladoras as $reguladora) 
+                    @foreach ($reguladoras as $reguladora) 
                         <tr>
                             <td>{{ $reguladora->razao_social }}</td>
                             <td class="label-cnpj" data-inputmask="'mask': '99.999.999/9999-99'">{{ $reguladora->cnpj }}</td>
@@ -70,11 +70,7 @@
                                 </form>
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-center">Nenhum registro encontrado!</td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
         </div>

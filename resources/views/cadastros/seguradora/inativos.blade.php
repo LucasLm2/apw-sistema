@@ -15,7 +15,7 @@
         </div>
 
         <div class="card-body">
-            <table class="table table-sm table-striped table-hover">
+            <table class="table table-sm table-striped table-hover datatable">
                 <thead>
                     <tr>
                         <th class="col-5">{{ __('Razão Social') }}</th>
@@ -26,7 +26,7 @@
                     </tr>
                 </thead>
                 <tbody>        
-                    @forelse ($seguradoras as $seguradora) 
+                    @foreach ($seguradoras as $seguradora) 
                         <tr>
                             <td>{{ $seguradora->razao_social }}</td>
                             <td class="label-cnpj" data-inputmask="'mask': '99.999.999/9999-99'">{{ $seguradora->cnpj }}</td>
@@ -70,11 +70,7 @@
                                 </form>
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-center">Nenhum registro encontrado!</td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
         </div>

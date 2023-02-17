@@ -18,18 +18,18 @@
         </div>
 
         <div class="card-body">
-            <table class="table table-sm table-striped table-hover">
+            <table id="table" class="table table-sm table-striped table-hover datatable">
                 <thead>
                     <tr>
                         <th class="col-5">{{ __('Razão Social') }}</th>
                         <th class="col-2">{{ __('CNPJ') }}</th>
                         <th class="col-4">{{ __('Nome Fantasia') }}</th>
-                        <th class="col-1 text-center">{{ __('Edit') }}</th>
-                        <th class="col-1 text-center">{{ __('Inativar') }}</th>
+                        <th class="col-1 text-center" data-orderable="false">{{ __('Edit') }}</th>
+                        <th class="col-1 text-center" data-orderable="false">{{ __('Inativar') }}</th>
                     </tr>
                 </thead>
-                <tbody>        
-                    @forelse ($clientes as $cliente) 
+                <tbody>     
+                    @foreach ($clientes as $cliente) 
                         <tr>
                             <td>{{ $cliente->razao_social }}</td>
                             <td class="label-cnpj" data-inputmask="'mask': '99.999.999/9999-99'">{{ $cliente->cnpj }}</td>
@@ -62,11 +62,7 @@
                                 </form>
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="text-center">Nenhum registro encontrado!</td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
         </div>

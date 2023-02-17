@@ -29,6 +29,7 @@ class StoreTipoDespesaRequest extends FormRequest
                 'string',
             ],
             'descricao' => [
+                'nullable',
                 'string'
             ]
         ];

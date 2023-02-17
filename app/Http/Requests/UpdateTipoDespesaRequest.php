@@ -29,6 +29,7 @@ class UpdateTipoDespesaRequest extends FormRequest
                 'string',
             ],
             'descricao' => [
+                'nullable',
                 'string'
             ]
         ];
