@@ -11,17 +11,30 @@ class Email extends Model
 {
     use HasFactory;
 
-    public static function massInsert(array $dados, string $tabelaReferencia, int $referenciaId): void
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'email', 
+        'tabela_referencia',
+        'referencia_id',
+        'nome_contato'
+    ];
+
+    public static function massInsert(array $dados, array $dadosContato, string $tabelaReferencia, int $referenciaId): void
     {
         $emails = [];
-        foreach ($dados as $email) {
+        foreach ($dados as $index => $email) {
             if(empty($email))
                 continue;
 
             $emails[] = [
                 'email' => ManipulacaoString::limpaString($email), 
                 'tabela_referencia' => $tabelaReferencia, 
-                'referencia_id' => $referenciaId
+                'referencia_id' => $referenciaId, 
+                'nome_contato' => $dadosContato[$index]
             ];
         }
 
@@ -30,7 +43,7 @@ class Email extends Model
 
     public static function allWithReference(string $tabelaReferencia, int $referenciaId): ?Collection
     {
-        return Email::select('email')
+        return Email::select('email', 'nome_contato')
                 ->where('tabela_referencia', '=', $tabelaReferencia)
                 ->where('referencia_id', '=', $referenciaId)
                 ->get();

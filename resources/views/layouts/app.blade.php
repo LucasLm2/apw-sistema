@@ -55,18 +55,18 @@
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a 
-                                            class="dropdown-item {{ request()->routeIs('cadastro.reguladora.index') ? 'active':'' }}" 
-                                            href="{{ route('cadastro.reguladora.index') }}"
-                                        >
-                                            {{ __('Reguladoras') }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a 
                                             class="dropdown-item {{ request()->routeIs('cadastro.cliente.index') ? 'active':'' }}" 
                                             href="{{ route('cadastro.cliente.index') }}"
                                         >
                                             {{ __('Clientes') }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a 
+                                            class="dropdown-item {{ request()->routeIs('cadastro.reguladora.index') ? 'active':'' }}" 
+                                            href="{{ route('cadastro.reguladora.index') }}"
+                                        >
+                                            {{ __('Reguladoras') }}
                                         </a>
                                     </li>
                                     <li>

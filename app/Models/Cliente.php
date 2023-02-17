@@ -72,11 +72,11 @@ class Cliente extends Model
             ]);
 
             if(isset($dados->telefones) && count($dados->telefones) > 0) {
-                Telefone::massInsert($dados->telefones, 'clientes', $cliente->id);
+                Telefone::massInsert($dados->telefones, $dados->telefones_contatos, 'clientes', $cliente->id);
             }
 
             if(isset($dados->emails) && count($dados->emails) > 0) {
-                Email::massInsert($dados->emails, 'clientes', $cliente->id);
+                Email::massInsert($dados->emails, $dados->emails_contatos, 'clientes', $cliente->id);
             }
             
             return $cliente->razao_social;
@@ -110,12 +110,12 @@ class Cliente extends Model
 
             Telefone::massDelete('clientes', $cliente->id);
             if(isset($dados->telefones) && count($dados->telefones) > 0) {
-                Telefone::massInsert($dados->telefones, 'clientes', $cliente->id);
+                Telefone::massInsert($dados->telefones, $dados->telefones_contatos, 'clientes', $cliente->id);
             }
 
             Email::massDelete('clientes', $cliente->id);
             if(isset($dados->emails) && count($dados->emails) > 0) {
-                Email::massInsert($dados->emails, 'clientes', $cliente->id);
+                Email::massInsert($dados->emails, $dados->emails_contatos, 'clientes', $cliente->id);
             }
     
             if($dados->cep == null) {

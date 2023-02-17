@@ -11,17 +11,30 @@ class Telefone extends Model
 {
     use HasFactory;
 
-    public static function massInsert(array $dados, string $tabelaReferencia, int $referenciaId): void
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'numero', 
+        'tabela_referencia',
+        'referencia_id',
+        'nome_contato'
+    ];
+
+    public static function massInsert(array $dadosTelefone, array $dadosContato, string $tabelaReferencia, int $referenciaId): void
     {
         $telefones = [];
-        foreach ($dados as $telefone) {
+        foreach ($dadosTelefone as $index => $telefone) {
             if(empty($telefone))
                 continue;
 
             $telefones[] = [
                 'numero' => ManipulacaoString::limpaString($telefone), 
                 'tabela_referencia' => $tabelaReferencia, 
-                'referencia_id' => $referenciaId
+                'referencia_id' => $referenciaId, 
+                'nome_contato' => $dadosContato[$index]
             ];
         }
 
@@ -30,7 +43,7 @@ class Telefone extends Model
 
     public static function allWithReference(string $tabelaReferencia, int $referenciaId): ?Collection
     {
-        return Telefone::select('numero')
+        return Telefone::select('numero', 'nome_contato')
                 ->where('tabela_referencia', '=', $tabelaReferencia)
                 ->where('referencia_id', '=', $referenciaId)
                 ->get();

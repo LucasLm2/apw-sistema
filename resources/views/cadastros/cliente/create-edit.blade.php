@@ -148,6 +148,13 @@
                                         name="emails[]" 
                                         value="{{ isset($email->email) ? $email->email : old('email->email') }}"
                                     >
+                                    <input 
+                                        type="text" 
+                                        class="form-control @error('email->email') is-invalid @enderror" 
+                                        name="emails_contatos[]" 
+                                        placeholder="Nome de Contato"
+                                        value="{{ isset($email->nome_contato) ? $email->nome_contato : old('email->nome_contato') }}"
+                                    >
                                     <button type="button" class="btn btn-success ms-2" onclick="duplicarCampos(this, 'destino-email');">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
@@ -176,6 +183,14 @@
                                     name="emails[]" 
                                     value="{{ isset($email) ? $email : old('email') }}"
                                 >
+                                <input 
+                                    type="text" 
+                                    class="form-control @error('email') is-invalid @enderror" 
+                                    name="emails_contatos[]" 
+                                    placeholder="Nome de Contato"
+                                    value="{{ isset($emai_contato) ? $emai_contato : old('emai_contato') }}"
+                                >
+
                                 <button type="button" class="btn btn-success ms-2" onclick="duplicarCampos(this, 'destino-email');">
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
@@ -209,6 +224,13 @@
                                         name="telefones[]" 
                                         value="{{ isset($telefone->numero) ? $telefone->numero : old('telefone->numero') }}"
                                     >
+                                    <input 
+                                        type="text" 
+                                        class="form-control @error('telefone') is-invalid @enderror" 
+                                        name="telefones_contatos[]" 
+                                        placeholder="Nome de Contato"
+                                        value="{{ isset($telefone->nome_contato) ? $telefone->nome_contato : old('telefone->nome_contato') }}"
+                                    >
                                     <button type="button" class="btn btn-success ms-2" onclick="duplicarCampos(this, 'destino-telefone');">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
@@ -236,6 +258,13 @@
                                     class="form-control telefone-mask @error('telefone') is-invalid @enderror" 
                                     name="telefones[]" 
                                     value="{{ isset($telefone) ? $telefone : old('telefone') }}"
+                                >
+                                <input 
+                                    type="text" 
+                                    class="form-control @error('telefone') is-invalid @enderror" 
+                                    name="telefones_contatos[]" 
+                                    placeholder="Nome de Contato"
+                                    value="{{ isset($telefone->nome_contato) ? $telefone->nome_contato : old('telefone->nome_contato') }}"
                                 >
                                 <button type="button" class="btn btn-success ms-2" onclick="duplicarCampos(this, 'destino-telefone');">
                                     <i class="fa-solid fa-plus"></i>

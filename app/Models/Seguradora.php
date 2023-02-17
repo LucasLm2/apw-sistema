@@ -72,11 +72,11 @@ class Seguradora extends Model
             ]);
 
             if(isset($dados->telefones) && count($dados->telefones) > 0) {
-                Telefone::massInsert($dados->telefones, 'seguradoras', $seguradora->id);
+                Telefone::massInsert($dados->telefones, $dados->telefones_contatos, 'seguradoras', $seguradora->id);
             }
 
             if(isset($dados->emails) && count($dados->emails) > 0) {
-                Email::massInsert($dados->emails, 'seguradoras', $seguradora->id);
+                Email::massInsert($dados->emails, $dados->emails_contatos, 'seguradoras', $seguradora->id);
             }
             
             return $seguradora->razao_social;
@@ -110,12 +110,12 @@ class Seguradora extends Model
 
             Telefone::massDelete('seguradoras', $seguradora->id);
             if(isset($dados->telefones) && count($dados->telefones) > 0) {
-                Telefone::massInsert($dados->telefones, 'seguradoras', $seguradora->id);
+                Telefone::massInsert($dados->telefones, $dados->telefones_contatos, 'seguradoras', $seguradora->id);
             }
 
             Email::massDelete('seguradoras', $seguradora->id);
             if(isset($dados->emails) && count($dados->emails) > 0) {
-                Email::massInsert($dados->emails, 'seguradoras', $seguradora->id);
+                Email::massInsert($dados->emails, $dados->emails_contatos, 'seguradoras', $seguradora->id);
             }
     
             if($dados->cep == null) {

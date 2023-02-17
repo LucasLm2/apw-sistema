@@ -72,11 +72,11 @@ class Reguladora extends Model
             ]);
 
             if(isset($dados->telefones) && count($dados->telefones) > 0) {
-                Telefone::massInsert($dados->telefones, 'reguladoras', $reguladora->id);
+                Telefone::massInsert($dados->telefones, $dados->telefones_contatos, 'reguladoras', $reguladora->id);
             }
 
             if(isset($dados->emails) && count($dados->emails) > 0) {
-                Email::massInsert($dados->emails, 'reguladoras', $reguladora->id);
+                Email::massInsert($dados->emails, $dados->emails_contatos, 'reguladoras', $reguladora->id);
             }
             
             return $reguladora->razao_social;
@@ -110,12 +110,12 @@ class Reguladora extends Model
 
             Telefone::massDelete('reguladoras', $reguladora->id);
             if(isset($dados->telefones) && count($dados->telefones) > 0) {
-                Telefone::massInsert($dados->telefones, 'reguladoras', $reguladora->id);
+                Telefone::massInsert($dados->telefones, $dados->telefones_contatos, 'reguladoras', $reguladora->id);
             }
 
             Email::massDelete('reguladoras', $reguladora->id);
             if(isset($dados->emails) && count($dados->emails) > 0) {
-                Email::massInsert($dados->emails, 'reguladoras', $reguladora->id);
+                Email::massInsert($dados->emails, $dados->emails_contatos, 'reguladoras', $reguladora->id);
             }
     
             if($dados->cep == null) {

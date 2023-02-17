@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('tabela_referencia');
             $table->unsignedBigInteger('referencia_id');
             $table->string('numero', 11);
+            $table->string('nome_contato')->nullable();
             $table->timestamps();
 
             // Foreign keys
