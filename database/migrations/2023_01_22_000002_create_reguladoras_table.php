@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('reguladoras', function (Blueprint $table) {
             $table->id();
             $table->string('cnpj', 14);
-            $table->string('nome');
+            $table->string('razao_social');
+            $table->string('nome_fantasia')->nullable();
             $table->string('inscricao_estadual')->nullable();
             $table->string('site')->nullable();
             $table->unsignedBigInteger('endereco_id')->nullable();

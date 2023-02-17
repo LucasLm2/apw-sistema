@@ -18,7 +18,8 @@ class Cliente extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'nome',
+        'razao_social', 
+        'nome_fantasia',
         'cnpj',
         'inscricao_estadual',
         'site',
@@ -29,7 +30,8 @@ class Cliente extends Model
     {
         return Cliente::select(
                 'clientes.id',
-                'clientes.nome',
+                'clientes.razao_social',
+                'clientes.nome_fantasia',
                 'clientes.cnpj',
                 'clientes.inscricao_estadual',
                 'clientes.site',
@@ -52,7 +54,7 @@ class Cliente extends Model
 
     public static function createAndReturnName(object $dados): string
     {
-        $nome = DB::transaction(function () use($dados) {
+        $razaoSocial = DB::transaction(function () use($dados) {
             
             $enderecoId = null;
             if($dados->cep != '') {
@@ -61,7 +63,8 @@ class Cliente extends Model
             }
 
             $cliente = Cliente::create([
-                'nome' => $dados->nome,
+                'razao_social' => $dados->razao_social,
+                'nome_fantasia' => $dados->nome_fantasia,
                 'cnpj' => ManipulacaoString::limpaString($dados->cnpj),
                 'inscricao_estadual' => $dados->inscricao_estadual,
                 'site' => $dados->site,
@@ -76,11 +79,11 @@ class Cliente extends Model
                 Email::massInsert($dados->emails, 'clientes', $cliente->id);
             }
             
-            return $cliente->nome;
+            return $cliente->razao_social;
 
         }, 5);
 
-        return $nome;
+        return $razaoSocial;
     }
 
     public static function formataDadosEndereco(object $dados): object
@@ -97,9 +100,10 @@ class Cliente extends Model
 
     public static function updateAndReturnName(Cliente $cliente, object $dados): string
     {
-        $nome = DB::transaction(function () use($dados, $cliente) {
+        $razaoSocial = DB::transaction(function () use($dados, $cliente) {
             
-            $cliente->nome = $dados->nome;
+            $cliente->razao_social = $dados->razao_social;
+            $cliente->nome_fantasia = $dados->nome_fantasia;
             $cliente->cnpj = ManipulacaoString::limpaString($dados->cnpj);
             $cliente->inscricao_estadual = $dados->inscricao_estadual;
             $cliente->site = $dados->site;
@@ -118,7 +122,7 @@ class Cliente extends Model
                 $cliente->endereco_id = null;
                 $cliente->save();
 
-                return $cliente->nome;
+                return $cliente->razao_social;
             }
 
             if($cliente->endereco_id == null) {
@@ -127,16 +131,16 @@ class Cliente extends Model
     
                 $cliente->save();
 
-                return $cliente->nome;
+                return $cliente->razao_social;
             }
         
             Endereco::edit($dados, $cliente->endereco_id);
     
             $cliente->save();
 
-            return $cliente->nome;
+            return $cliente->razao_social;
         }, 5);
 
-        return $nome;
+        return $razaoSocial;
     }
 }

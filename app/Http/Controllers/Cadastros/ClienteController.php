@@ -21,7 +21,7 @@ class ClienteController extends Controller
     public function index()
     {
         $clientes = Cache::rememberForever('clientes', function () {
-            return Cliente::select(['id', 'nome', 'cnpj'])->where('ativo', '=', true)->get();
+            return Cliente::select(['id', 'razao_social', 'nome_fantasia', 'cnpj'])->where('ativo', '=', true)->get();
         });
 
         return view('cadastros.cliente.index')
@@ -53,10 +53,10 @@ class ClienteController extends Controller
     {
         Cache::forget('clientes');
 
-        $nome = Cliente::createAndReturnName((object)$request->all());
+        $razaoSocial = Cliente::createAndReturnName((object)$request->all());
 
         return to_route('cadastro.cliente.index')
-            ->with('success', "Cliente '{$nome}' adicionado com sucesso.");
+            ->with('success', "Cliente '{$razaoSocial}' adicionado com sucesso.");
     }
 
     /**
@@ -93,10 +93,10 @@ class ClienteController extends Controller
     {
         Cache::forget('clientes');
 
-        $nome = Cliente::updateAndReturnName($cliente, (object)$request->all());
+        $razaoSocial = Cliente::updateAndReturnName($cliente, (object)$request->all());
 
         return to_route('cadastro.cliente.index')
-            ->with('success', "Cliente '{$nome}' atualizado com sucesso.");
+            ->with('success', "Cliente '{$razaoSocial}' atualizado com sucesso.");
     }
 
     /**
@@ -112,7 +112,7 @@ class ClienteController extends Controller
         $cliente->delete();
         
         return to_route('cadastro.cliente.inativos')
-            ->with('success', "Cliente '{$cliente->nome}' excluido com sucesso.");
+            ->with('success', "Cliente '{$cliente->razao_social}' excluido com sucesso.");
     }
 
     /**
@@ -123,7 +123,7 @@ class ClienteController extends Controller
     public function inativos()
     {
         $reguladorasInativas = Cache::rememberForever('clientes-inativas', function () {
-            return Cliente::select(['id', 'nome', 'cnpj'])->where('ativo', '=', false)->get();
+            return Cliente::select(['id', 'razao_social', 'nome_fantasia', 'cnpj'])->where('ativo', '=', false)->get();
         });
 
         return view('cadastros.cliente.inativos')
@@ -144,11 +144,11 @@ class ClienteController extends Controller
         if($cliente->ativo) {
             $cliente->ativo = false;
 
-            $messagem = "Cliente '{$cliente->nome}' inativado com sucesso.";
+            $messagem = "Cliente '{$cliente->razao_social}' inativado com sucesso.";
         } else {
             $cliente->ativo = true;
 
-            $messagem = "Cliente '{$cliente->nome}' ativado com sucesso.";
+            $messagem = "Cliente '{$cliente->razao_social}' ativado com sucesso.";
         }
         
         $cliente->save();

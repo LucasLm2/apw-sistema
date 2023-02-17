@@ -18,7 +18,8 @@ class Reguladora extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'nome',
+        'razao_social', 
+        'nome_fantasia',
         'cnpj',
         'inscricao_estadual',
         'site',
@@ -29,7 +30,8 @@ class Reguladora extends Model
     {
         return Reguladora::select(
                 'reguladoras.id',
-                'reguladoras.nome',
+                'reguladoras.razao_social',
+                'reguladoras.nome_fantasia',
                 'reguladoras.cnpj',
                 'reguladoras.inscricao_estadual',
                 'reguladoras.site',
@@ -52,7 +54,7 @@ class Reguladora extends Model
 
     public static function createAndReturnName(object $dados): string
     {
-        $nome = DB::transaction(function () use($dados) {
+        $razaoSocial = DB::transaction(function () use($dados) {
             
             $enderecoId = null;
             if($dados->cep != '') {
@@ -61,7 +63,8 @@ class Reguladora extends Model
             }
 
             $reguladora = Reguladora::create([
-                'nome' => $dados->nome,
+                'razao_social' => $dados->razao_social,
+                'nome_fantasia' => $dados->nome_fantasia,
                 'cnpj' => ManipulacaoString::limpaString($dados->cnpj),
                 'inscricao_estadual' => $dados->inscricao_estadual,
                 'site' => $dados->site,
@@ -76,11 +79,11 @@ class Reguladora extends Model
                 Email::massInsert($dados->emails, 'reguladoras', $reguladora->id);
             }
             
-            return $reguladora->nome;
+            return $reguladora->razao_social;
 
         }, 5);
 
-        return $nome;
+        return $razaoSocial;
     }
 
     public static function formataDadosEndereco(object $dados): object
@@ -97,9 +100,10 @@ class Reguladora extends Model
 
     public static function updateAndReturnName(Reguladora $reguladora, object $dados): string
     {
-        $nome = DB::transaction(function () use($dados, $reguladora) {
+        $razaoSocial = DB::transaction(function () use($dados, $reguladora) {
             
-            $reguladora->nome = $dados->nome;
+            $reguladora->razao_social = $dados->razao_social;
+            $reguladora->nome_fantasia = $dados->nome_fantasia;
             $reguladora->cnpj = ManipulacaoString::limpaString($dados->cnpj);
             $reguladora->inscricao_estadual = $dados->inscricao_estadual;
             $reguladora->site = $dados->site;
@@ -118,7 +122,7 @@ class Reguladora extends Model
                 $reguladora->endereco_id = null;
                 $reguladora->save();
 
-                return $reguladora->nome;
+                return $reguladora->razao_social;
             }
 
             if($reguladora->endereco_id == null) {
@@ -127,16 +131,16 @@ class Reguladora extends Model
     
                 $reguladora->save();
 
-                return $reguladora->nome;
+                return $reguladora->razao_social;
             }
         
             Endereco::edit($dados, $reguladora->endereco_id);
     
             $reguladora->save();
 
-            return $reguladora->nome;
+            return $reguladora->razao_social;
         }, 5);
 
-        return $nome;
+        return $razaoSocial;
     }
 }

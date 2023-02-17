@@ -18,7 +18,8 @@ class Seguradora extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'nome',
+        'razao_social', 
+        'nome_fantasia',
         'cnpj',
         'inscricao_estadual',
         'site',
@@ -29,7 +30,8 @@ class Seguradora extends Model
     {
         return Seguradora::select(
                 'seguradoras.id',
-                'seguradoras.nome',
+                'seguradoras.razao_social',
+                'seguradoras.nome_fantasia',
                 'seguradoras.cnpj',
                 'seguradoras.inscricao_estadual',
                 'seguradoras.site',
@@ -52,7 +54,7 @@ class Seguradora extends Model
 
     public static function createAndReturnName(object $dados): string
     {
-        $nome = DB::transaction(function () use($dados) {
+        $razaoSocial = DB::transaction(function () use($dados) {
             
             $enderecoId = null;
             if($dados->cep != '') {
@@ -61,7 +63,8 @@ class Seguradora extends Model
             }
 
             $seguradora = Seguradora::create([
-                'nome' => $dados->nome,
+                'razao_social' => $dados->razao_social,
+                'nome_fantasia' => $dados->nome_fantasia,
                 'cnpj' => ManipulacaoString::limpaString($dados->cnpj),
                 'inscricao_estadual' => $dados->inscricao_estadual,
                 'site' => $dados->site,
@@ -76,11 +79,11 @@ class Seguradora extends Model
                 Email::massInsert($dados->emails, 'seguradoras', $seguradora->id);
             }
             
-            return $seguradora->nome;
+            return $seguradora->razao_social;
 
         }, 5);
 
-        return $nome;
+        return $razaoSocial;
     }
 
     public static function formataDadosEndereco(object $dados): object
@@ -97,9 +100,10 @@ class Seguradora extends Model
 
     public static function updateAndReturnName(Seguradora $seguradora, object $dados): string
     {
-        $nome = DB::transaction(function () use($dados, $seguradora) {
+        $razaoSocial = DB::transaction(function () use($dados, $seguradora) {
             
-            $seguradora->nome = $dados->nome;
+            $seguradora->razao_social = $dados->razao_social;
+            $seguradora->nome_fantasia = $dados->nome_fantasia;
             $seguradora->cnpj = ManipulacaoString::limpaString($dados->cnpj);
             $seguradora->inscricao_estadual = $dados->inscricao_estadual;
             $seguradora->site = $dados->site;
@@ -118,7 +122,7 @@ class Seguradora extends Model
                 $seguradora->endereco_id = null;
                 $seguradora->save();
 
-                return $seguradora->nome;
+                return $seguradora->razao_social;
             }
 
             if($seguradora->endereco_id == null) {
@@ -127,16 +131,16 @@ class Seguradora extends Model
     
                 $seguradora->save();
 
-                return $seguradora->nome;
+                return $seguradora->razao_social;
             }
         
             Endereco::edit($dados, $seguradora->endereco_id);
     
             $seguradora->save();
 
-            return $seguradora->nome;
+            return $seguradora->razao_social;
         }, 5);
 
-        return $nome;
+        return $razaoSocial;
     }
 }

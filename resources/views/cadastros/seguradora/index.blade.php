@@ -21,8 +21,9 @@
             <table class="table table-sm table-striped table-hover">
                 <thead>
                     <tr>
-                        <th class="col-3">{{ __('Name') }}</th>
-                        <th class="col-8">{{ __('CNPJ') }}</th>
+                        <th class="col-5">{{ __('Razão Social') }}</th>
+                        <th class="col-2">{{ __('CNPJ') }}</th>
+                        <th class="col-4">{{ __('Nome Fantasia') }}</th>
                         <th class="col-1 text-center">{{ __('Edit') }}</th>
                         <th class="col-1 text-center">{{ __('Inativar') }}</th>
                     </tr>
@@ -30,8 +31,9 @@
                 <tbody>        
                     @forelse ($seguradoras as $seguradora) 
                         <tr>
-                            <td>{{ $seguradora->nome }}</td>
+                            <td>{{ $seguradora->razao_social }}</td>
                             <td class="label-cnpj" data-inputmask="'mask': '99.999.999/9999-99'">{{ $seguradora->cnpj }}</td>
+                            <td>{{ $seguradora->nome_fantasia }}</td>
                             <td class="text-center">
                                 <a 
                                     class="text-success"
@@ -62,7 +64,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="text-center">Nenhum registro encontrado!</td>
+                            <td colspan="5" class="text-center">Nenhum registro encontrado!</td>
                         </tr>
                     @endforelse
                 </tbody>

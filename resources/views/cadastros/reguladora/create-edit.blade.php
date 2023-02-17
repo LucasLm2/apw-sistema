@@ -30,20 +30,20 @@
                 @endif
 
                 <div class="row mb-3">
-                    <label for="nome" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}*</label>
+                    <label for="razao_social" class="col-md-4 col-form-label text-md-end">{{ __('Razão Social') }}*</label>
 
                     <div class="col-md-6">
                         <input 
-                            id="nome" 
+                            id="razao_social" 
                             type="text" 
-                            class="form-control @error('nome') is-invalid @enderror" 
-                            name="nome" 
-                            value="{{ isset($reguladora->nome) ? $reguladora->nome : old('nome') }}"
+                            class="form-control @error('razao_social') is-invalid @enderror" 
+                            name="razao_social" 
+                            value="{{ isset($reguladora->razao_social) ? $reguladora->razao_social : old('razao_social') }}"
                             required
                             autofocus
                         >
 
-                        @error('nome')
+                        @error('razao_social')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -52,11 +52,11 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="descricao" class="col-md-4 col-form-label text-md-end">{{ __('CNPJ') }}*</label>
+                    <label for="cnpj" class="col-md-4 col-form-label text-md-end">{{ __('CNPJ') }}*</label>
 
                     <div class="col-md-6">
                         <input 
-                            id="descricao" 
+                            id="cnpj" 
                             type="text" 
                             class="form-control @error('cnpj') is-invalid @enderror" 
                             name="cnpj" 
@@ -66,6 +66,28 @@
                         >
 
                         @error('cnpj')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="nome_fantasia" class="col-md-4 col-form-label text-md-end">{{ __('Nome Fantasia') }}</label>
+
+                    <div class="col-md-6">
+                        <input 
+                            id="nome_fantasia" 
+                            type="text" 
+                            class="form-control @error('nome_fantasia') is-invalid @enderror" 
+                            name="nome_fantasia" 
+                            value="{{ isset($reguladora->nome_fantasia) ? $reguladora->nome_fantasia : old('nome_fantasia') }}"
+                            required
+                            autofocus
+                        >
+
+                        @error('nome_fantasia')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

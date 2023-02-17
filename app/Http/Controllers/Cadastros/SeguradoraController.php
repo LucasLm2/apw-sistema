@@ -21,7 +21,7 @@ class SeguradoraController extends Controller
     public function index()
     {
         $seguradoras = Cache::rememberForever('seguradoras', function () {
-            return Seguradora::select(['id', 'nome', 'cnpj'])->where('ativo', '=', true)->get();
+            return Seguradora::select(['id', 'razao_social', 'nome_fantasia', 'cnpj'])->where('ativo', '=', true)->get();
         });
 
         return view('cadastros.seguradora.index')
@@ -53,10 +53,10 @@ class SeguradoraController extends Controller
     {
         Cache::forget('seguradoras');
 
-        $nome = Seguradora::createAndReturnName((object)$request->all());
+        $razaoSocial = Seguradora::createAndReturnName((object)$request->all());
 
         return to_route('cadastro.seguradora.index')
-            ->with('success', "Seguradora '{$nome}' adicionada com sucesso.");
+            ->with('success', "Seguradora '{$razaoSocial}' adicionada com sucesso.");
     }
 
     /**
@@ -93,10 +93,10 @@ class SeguradoraController extends Controller
     {
         Cache::forget('seguradoras');
 
-        $nome = Seguradora::updateAndReturnName($seguradora, (object)$request->all());
+        $razaoSocial = Seguradora::updateAndReturnName($seguradora, (object)$request->all());
 
         return to_route('cadastro.seguradora.index')
-            ->with('success', "Seguradora '{$nome}' atualizada com sucesso.");
+            ->with('success', "Seguradora '{$razaoSocial}' atualizada com sucesso.");
     }
 
     /**
@@ -112,7 +112,7 @@ class SeguradoraController extends Controller
         $seguradora->delete();
         
         return to_route('cadastro.seguradora.inativos')
-            ->with('success', "Seguradora '{$seguradora->nome}' excluida com sucesso.");
+            ->with('success', "Seguradora '{$seguradora->razao_social}' excluida com sucesso.");
     }
 
     /**
@@ -123,7 +123,7 @@ class SeguradoraController extends Controller
     public function inativos()
     {
         $reguladorasInativas = Cache::rememberForever('seguradoras-inativas', function () {
-            return Seguradora::select(['id', 'nome', 'cnpj'])->where('ativo', '=', false)->get();
+            return Seguradora::select(['id', 'razao_social', 'nome_fantasia', 'cnpj'])->where('ativo', '=', false)->get();
         });
 
         return view('cadastros.seguradora.inativos')
@@ -144,11 +144,11 @@ class SeguradoraController extends Controller
         if($seguradora->ativo) {
             $seguradora->ativo = false;
 
-            $messagem = "Seguradora '{$seguradora->nome}' inativada com sucesso.";
+            $messagem = "Seguradora '{$seguradora->razao_social}' inativada com sucesso.";
         } else {
             $seguradora->ativo = true;
 
-            $messagem = "Seguradora '{$seguradora->nome}' ativada com sucesso.";
+            $messagem = "Seguradora '{$seguradora->razao_social}' ativada com sucesso.";
         }
         
         $seguradora->save();

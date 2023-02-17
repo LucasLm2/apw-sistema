@@ -21,7 +21,7 @@ class ReguladoraController extends Controller
     public function index()
     {
         $reguladoras = Cache::rememberForever('reguladoras', function () {
-            return Reguladora::select(['id', 'nome', 'cnpj'])->where('ativo', '=', true)->get();
+            return Reguladora::select(['id', 'razao_social', 'nome_fantasia', 'cnpj'])->where('ativo', '=', true)->get();
         });
 
         return view('cadastros.reguladora.index')
@@ -53,10 +53,10 @@ class ReguladoraController extends Controller
     {
         Cache::forget('reguladoras');
 
-        $nome = Reguladora::createAndReturnName((object)$request->all());
+        $razaoSocial = Reguladora::createAndReturnName((object)$request->all());
 
         return to_route('cadastro.reguladora.index')
-            ->with('success', "Reguladora '{$nome}' adicionada com sucesso.");
+            ->with('success', "Reguladora '{$razaoSocial}' adicionada com sucesso.");
     }
 
     /**
@@ -93,10 +93,10 @@ class ReguladoraController extends Controller
     {
         Cache::forget('reguladoras');
 
-        $nome = Reguladora::updateAndReturnName($reguladora, (object)$request->all());
+        $razaoSocial = Reguladora::updateAndReturnName($reguladora, (object)$request->all());
 
         return to_route('cadastro.reguladora.index')
-            ->with('success', "Reguladora '{$nome}' atualizada com sucesso.");
+            ->with('success', "Reguladora '{$razaoSocial}' atualizada com sucesso.");
     }
 
     /**
@@ -112,7 +112,7 @@ class ReguladoraController extends Controller
         $reguladora->delete();
         
         return to_route('cadastro.reguladora.inativos')
-            ->with('success', "Reguladora '{$reguladora->nome}' excluida com sucesso.");
+            ->with('success', "Reguladora '{$reguladora->razao_social}' excluida com sucesso.");
     }
 
     /**
@@ -123,7 +123,7 @@ class ReguladoraController extends Controller
     public function inativos()
     {
         $reguladorasInativas = Cache::rememberForever('reguladoras-inativas', function () {
-            return Reguladora::select(['id', 'nome', 'cnpj'])->where('ativo', '=', false)->get();
+            return Reguladora::select(['id', 'razao_social', 'nome_fantasia', 'cnpj'])->where('ativo', '=', false)->get();
         });
 
         return view('cadastros.reguladora.inativos')
@@ -144,11 +144,11 @@ class ReguladoraController extends Controller
         if($reguladora->ativo) {
             $reguladora->ativo = false;
 
-            $messagem = "Reguladora '{$reguladora->nome}' inativada com sucesso.";
+            $messagem = "Reguladora '{$reguladora->razao_social}' inativada com sucesso.";
         } else {
             $reguladora->ativo = true;
 
-            $messagem = "Reguladora '{$reguladora->nome}' ativada com sucesso.";
+            $messagem = "Reguladora '{$reguladora->razao_social}' ativada com sucesso.";
         }
         
         $reguladora->save();

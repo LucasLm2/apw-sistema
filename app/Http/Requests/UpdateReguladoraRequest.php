@@ -24,9 +24,14 @@ class UpdateReguladoraRequest extends FormRequest
     public function rules()
     {
         return [
-            'nome' => [
+            'razao_social' => [
                 'required',
                 'string',
+                'max:255'
+            ],
+            'nome_fantasia' => [
+                'string',
+                'max:255'
             ],
             'cnpj' => [
                 'required',
