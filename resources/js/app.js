@@ -16,6 +16,7 @@ window.ativar = ativar;
 import * as mask  from './funcoes/adicionar-mascara';
 window.mascaraPorAtributo = mask.mascaraPorAtributo;
 window.mascaraTelefoneCelular = mask.mascaraTelefoneCelular;
+window.mascaraCpfCnpj = mask.mascaraCpfCnpj;
 
 import * as adicionarRemoverCampos from './funcoes/adicionar-remover-campos';
 window.duplicarCampos = adicionarRemoverCampos.duplicarCampos;

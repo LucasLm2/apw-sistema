@@ -10,10 +10,8 @@ class UsersDefaultSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         User::create([
             'name' => 'Lucas Passos Silva dos Santos',

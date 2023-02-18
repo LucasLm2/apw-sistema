@@ -9,16 +9,17 @@ use App\Http\Requests\UpdateReguladoraRequest;
 use App\Models\Email;
 use App\Models\Endereco\Estado;
 use App\Models\Telefone;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
 use Illuminate\Support\Facades\Cache;
 
 class ReguladoraController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         $reguladoras = Cache::rememberForever('reguladoras', function () {
             return Reguladora::select(['id', 'razao_social', 'nome_fantasia', 'cnpj'])->where('ativo', '=', true)->get();
@@ -30,10 +31,8 @@ class ReguladoraController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         $estados = Cache::rememberForever('estados', function () {
             return Estado::select(['uf', 'nome'])->orderBy('nome')->get();
@@ -45,11 +44,8 @@ class ReguladoraController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreFornecedorRequest  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(StoreReguladoraRequest $request)
+    public function store(StoreReguladoraRequest $request): RedirectResponse
     {
         Cache::forget('reguladoras');
 
@@ -61,11 +57,8 @@ class ReguladoraController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $reguladora
-     * @return \Illuminate\Http\Response
      */
-    public function edit(int $reguladora)
+    public function edit(int $reguladora): View
     {
         $reguladora = Reguladora::findWithEndereco($reguladora);
         $telefones = Telefone::allWithReference('reguladoras', $reguladora->id);
@@ -84,12 +77,8 @@ class ReguladoraController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateReguladoraRequest  $request
-     * @param  \App\Models\Reguladora  $reguladora
-     * @return \Illuminate\Http\Response
      */
-    public function update(UpdateReguladoraRequest $request, Reguladora $reguladora)
+    public function update(UpdateReguladoraRequest $request, Reguladora $reguladora): RedirectResponse
     {
         Cache::forget('reguladoras');
 
@@ -101,11 +90,8 @@ class ReguladoraController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Reguladora  $reguladora
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Reguladora $reguladora)
+    public function destroy(Reguladora $reguladora): RedirectResponse
     {
         Cache::forget('reguladoras-inativas');
 
@@ -118,9 +104,8 @@ class ReguladoraController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
-    public function inativos()
+    public function inativos(): View
     {
         $reguladorasInativas = Cache::rememberForever('reguladoras-inativas', function () {
             return Reguladora::select(['id', 'razao_social', 'nome_fantasia', 'cnpj'])->where('ativo', '=', false)->get();
@@ -131,12 +116,9 @@ class ReguladoraController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Reguladora  $reguladora
-     * @return \Illuminate\Http\Response
+     * Update the specified resource in storage.
      */
-    public function inativarAtivar(Reguladora $reguladora)
+    public function inativarAtivar(Reguladora $reguladora): RedirectResponse
     {
         Cache::forget('reguladoras');
         Cache::forget('reguladoras-inativas');

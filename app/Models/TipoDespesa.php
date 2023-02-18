@@ -12,7 +12,7 @@ class TipoDespesa extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $fillable = [
         'nome',

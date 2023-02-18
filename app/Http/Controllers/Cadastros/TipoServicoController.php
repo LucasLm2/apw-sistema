@@ -6,16 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\TipoServico;
 use App\Http\Requests\StoreTipoServicoRequest;
 use App\Http\Requests\UpdateTipoServicoRequest;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 
 class TipoServicoController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View 
     {
         $tipoServicos = Cache::rememberForever('tipo-servicos', function () {
             return TipoServico::select(['id', 'nome', 'descricao'])->where('ativo', '=', true)->get();
@@ -27,21 +28,16 @@ class TipoServicoController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         return view('cadastros.tipo-servico.create-edit');
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreFornecedorRequest  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(StoreTipoServicoRequest $request)
+    public function store(StoreTipoServicoRequest $request): RedirectResponse
     {
         Cache::forget('tipo-servicos');
         
@@ -56,11 +52,8 @@ class TipoServicoController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\TipoServico  $tipoServico
-     * @return \Illuminate\Http\Response
      */
-    public function edit(TipoServico $tipoServico)
+    public function edit(TipoServico $tipoServico): View
     {
         return view('cadastros.tipo-servico.create-edit')
             ->with('tipoServico', $tipoServico);
@@ -68,12 +61,8 @@ class TipoServicoController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateTipoServicoRequest  $request
-     * @param  \App\Models\TipoServico  $tipoServico
-     * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTipoServicoRequest $request, TipoServico $tipoServico)
+    public function update(UpdateTipoServicoRequest $request, TipoServico $tipoServico): RedirectResponse
     {
         Cache::forget('tipo-servicos');
 
@@ -87,11 +76,8 @@ class TipoServicoController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\TipoServico  $tipoServico
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(TipoServico $tipoServico)
+    public function destroy(TipoServico $tipoServico): RedirectResponse
     {
         Cache::forget('tipo-servicos-inativos');
 
@@ -104,9 +90,8 @@ class TipoServicoController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
-    public function inativos()
+    public function inativos(): View
     {
         $tipoServicos = Cache::rememberForever('tipo-servicos-inativos', function () {
             return TipoServico::select(['id', 'nome', 'descricao'])->where('ativo', '=', false)->get();
@@ -117,12 +102,9 @@ class TipoServicoController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\TipoServico  $reguladora
-     * @return \Illuminate\Http\Response
+     * Update the specified resource in storage.
      */
-    public function inativarAtivar(TipoServico $tipoServico)
+    public function inativarAtivar(TipoServico $tipoServico): RedirectResponse
     {
         Cache::forget('tipo-servicos');
         Cache::forget('tipo-servicos-inativos');

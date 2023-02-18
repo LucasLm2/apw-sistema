@@ -9,8 +9,7 @@ return [
     'api_brasil' => env('PROVIDER_BRASIL_API', 'https://brasilapi.com.br/api/'),
 
     'bcode_ceps' => env('PROVIDER_BCODE_CEPS', 'https://cep.bcode.com.br/v1/'),
-
-
+    
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -63,7 +62,7 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    'asset_url' => env('ASSET_URL'),
+    'asset_url' => env('ASSET_URL', '/'),
 
     /*
     |--------------------------------------------------------------------------

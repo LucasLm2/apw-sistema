@@ -8,14 +8,12 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
-            $table->string('cnpj', 14);
+            $table->string('cpf_cnpj', 14);
             $table->string('razao_social');
             $table->string('nome_fantasia')->nullable();
             $table->string('inscricao_estadual')->nullable();
@@ -28,17 +26,15 @@ return new class extends Migration
             $table->foreign('endereco_id')->references('id')->on('enderecos');
 
             // Indexs
-            $table->unique('cnpj');
+            $table->unique('cpf_cnpj');
             $table->index('endereco_id');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('clientes');
     }

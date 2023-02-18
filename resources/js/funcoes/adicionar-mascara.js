@@ -10,4 +10,12 @@ function mascaraTelefoneCelular(seletor) {
     ).mask(document.querySelectorAll(seletor));
 }
 
-export {mascaraPorAtributo, mascaraTelefoneCelular};
+function mascaraCpfCnpj(seletor) {
+    Inputmask(
+        { 
+            mask: () => ["999.999.999-99", "99.999.999/9999-99"]
+        }
+    ).mask(document.querySelectorAll(seletor));
+}
+
+export {mascaraPorAtributo, mascaraTelefoneCelular, mascaraCpfCnpj};

@@ -52,20 +52,19 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="cnpj" class="col-md-4 col-form-label text-md-end">{{ __('CNPJ') }}*</label>
+                    <label for="cpf-cnpj" class="col-md-4 col-form-label text-md-end">{{ __('CPF/CNPJ') }}*</label>
 
                     <div class="col-md-6">
                         <input 
-                            id="cnpj" 
+                            id="cpf-cnpj" 
                             type="text" 
-                            class="form-control @error('cnpj') is-invalid @enderror" 
-                            name="cnpj" 
-                            value="{{ isset($cliente->cnpj) ? $cliente->cnpj : old('cnpj') }}"
-                            data-inputmask="'mask': '99.999.999/9999-99'"
+                            class="form-control cpf-cnpj-mask @error('cpf_cnpj') is-invalid @enderror" 
+                            name="cpf_cnpj" 
+                            value="{{ isset($cliente->cpf_cnpj) ? $cliente->cpf_cnpj : old('cpf_cnpj') }}"
                             required
                         >
 
-                        @error('cnpj')
+                        @error('cpf_cnpj')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -455,6 +454,7 @@
 @section('scripts')
     <script type="module">
         mascaraTelefoneCelular('.telefone-mask');
+        mascaraCpfCnpj('.cpf-cnpj-mask');
         mascaraPorAtributo(document.querySelectorAll("input"));
         @if (request()->routeIs('cadastro.cliente.edit'))
             await buscarMunicipios('{!! $cliente->estado !!}');

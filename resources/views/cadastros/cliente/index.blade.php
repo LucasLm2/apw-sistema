@@ -22,7 +22,7 @@
                 <thead>
                     <tr>
                         <th class="col-5">{{ __('Razão Social') }}</th>
-                        <th class="col-2">{{ __('CNPJ') }}</th>
+                        <th class="col-2">{{ __('CPF/CNPJ') }}</th>
                         <th class="col-4">{{ __('Nome Fantasia') }}</th>
                         <th class="col-1 text-center" data-orderable="false">{{ __('Edit') }}</th>
                         <th class="col-1 text-center" data-orderable="false">{{ __('Inativar') }}</th>
@@ -32,7 +32,7 @@
                     @foreach ($clientes as $cliente) 
                         <tr>
                             <td>{{ $cliente->razao_social }}</td>
-                            <td class="label-cnpj" data-inputmask="'mask': '99.999.999/9999-99'">{{ $cliente->cnpj }}</td>
+                            <td class="cpf-cnpj-mask">{{ $cliente->cpf_cnpj }}</td>
                             <td>{{ $cliente->nome_fantasia }}</td>
                             <td class="text-center">
                                 <a 
@@ -72,6 +72,6 @@
 
 @section('scripts')
     <script type="module">
-        Inputmask().mask(document.querySelectorAll(".label-cnpj"));
+        mascaraCpfCnpj('.cpf-cnpj-mask');
     </script>
 @endsection
