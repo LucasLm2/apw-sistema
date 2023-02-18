@@ -1,7 +1,6 @@
 <?php
 
 namespace Database\Seeders;
-
 use App\Models\Endereco\Estado;
 use App\Models\Endereco\Municipio;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -12,10 +11,8 @@ class EstadosMunicipiosSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $informacoesMunicipios = json_decode(Http::get(config("app.api_ibge") . 'v1/localidades/municipios'));
 
