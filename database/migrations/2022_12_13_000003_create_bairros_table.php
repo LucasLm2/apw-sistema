@@ -8,13 +8,11 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('bairros', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('nome', 50);
             $table->unsignedInteger('municipio_cod_ibge');
             $table->timestamps();
@@ -29,10 +27,8 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('bairros');
     }
