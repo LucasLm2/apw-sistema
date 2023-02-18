@@ -46,22 +46,16 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
 
     /**
      * Get the notification's channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array|string
      */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array|string
     {
         return ['mail'];
     }
 
     /**
      * Build the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable): MailMessage
     {
         if (static::$toMailCallback) {
             return call_user_func(static::$toMailCallback, $notifiable, $this->token);
@@ -72,11 +66,8 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
 
     /**
      * Get the reset password notification mail message for the given URL.
-     *
-     * @param  string  $url
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    protected function buildMailMessage($url)
+    protected function buildMailMessage(string $url): MailMessage
     {
         return (new MailMessage)
             ->subject(Lang::get('Reset Password Notification'))
@@ -88,11 +79,8 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
 
     /**
      * Get the reset URL for the given notifiable.
-     *
-     * @param  mixed  $notifiable
-     * @return string
      */
-    protected function resetUrl($notifiable)
+    protected function resetUrl(mixed $notifiable): string
     {
         if (static::$createUrlCallback) {
             return call_user_func(static::$createUrlCallback, $notifiable, $this->token);
@@ -108,9 +96,8 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
      * Set a callback that should be used when creating the reset password button URL.
      *
      * @param  \Closure(mixed, string): string  $callback
-     * @return void
      */
-    public static function createUrlUsing($callback)
+    public static function createUrlUsing($callback): void
     {
         static::$createUrlCallback = $callback;
     }
@@ -119,9 +106,8 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
      * Set a callback that should be used when building the notification mail message.
      *
      * @param  \Closure(mixed, string): \Illuminate\Notifications\Messages\MailMessage  $callback
-     * @return void
      */
-    public static function toMailUsing($callback)
+    public static function toMailUsing($callback): void
     {
         static::$toMailCallback = $callback;
     }
