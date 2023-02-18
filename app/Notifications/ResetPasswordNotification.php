@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use Closure;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -97,7 +98,7 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
      *
      * @param  \Closure(mixed, string): string  $callback
      */
-    public static function createUrlUsing($callback): void
+    public static function createUrlUsing(Closure $callback): void
     {
         static::$createUrlCallback = $callback;
     }
@@ -107,7 +108,7 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
      *
      * @param  \Closure(mixed, string): \Illuminate\Notifications\Messages\MailMessage  $callback
      */
-    public static function toMailUsing($callback): void
+    public static function toMailUsing(Closure $callback): void
     {
         static::$toMailCallback = $callback;
     }

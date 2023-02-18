@@ -9,19 +9,20 @@ use App\Http\Requests\UpdateClienteRequest;
 use App\Models\Email;
 use App\Models\Endereco\Estado;
 use App\Models\Telefone;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
 use Illuminate\Support\Facades\Cache;
 
 class ClienteController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         $clientes = Cache::rememberForever('clientes', function () {
-            return Cliente::select(['id', 'razao_social', 'nome_fantasia', 'cnpj'])->where('ativo', '=', true)->get();
+            return Cliente::select(['id', 'razao_social', 'nome_fantasia', 'cpf_cnpj'])->where('ativo', '=', true)->get();
         });
 
         return view('cadastros.cliente.index')
@@ -30,10 +31,8 @@ class ClienteController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         $estados = Cache::rememberForever('estados', function () {
             return Estado::select(['uf', 'nome'])->orderBy('nome')->get();
@@ -45,11 +44,8 @@ class ClienteController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreFornecedorRequest  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(StoreClienteRequest $request)
+    public function store(StoreClienteRequest $request): RedirectResponse
     {
         Cache::forget('clientes');
 
@@ -61,11 +57,8 @@ class ClienteController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $cliente
-     * @return \Illuminate\Http\Response
      */
-    public function edit(int $cliente)
+    public function edit(int $cliente): View
     {
         $cliente = Cliente::findWithEndereco($cliente);
         $telefones = Telefone::allWithReference('clientes', $cliente->id);
@@ -84,12 +77,8 @@ class ClienteController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateClienteRequest  $request
-     * @param  \App\Models\Cliente  $cliente
-     * @return \Illuminate\Http\Response
      */
-    public function update(UpdateClienteRequest $request, Cliente $cliente)
+    public function update(UpdateClienteRequest $request, Cliente $cliente): RedirectResponse
     {
         Cache::forget('clientes');
 
@@ -101,11 +90,8 @@ class ClienteController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Cliente  $cliente
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Cliente $cliente)
+    public function destroy(Cliente $cliente): RedirectResponse
     {
         Cache::forget('clientes-inativas');
 
@@ -114,16 +100,14 @@ class ClienteController extends Controller
         return to_route('cadastro.cliente.inativos')
             ->with('success', "Cliente '{$cliente->razao_social}' excluido com sucesso.");
     }
-
+    
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function inativos()
+    public function inativos(): View
     {
         $reguladorasInativas = Cache::rememberForever('clientes-inativas', function () {
-            return Cliente::select(['id', 'razao_social', 'nome_fantasia', 'cnpj'])->where('ativo', '=', false)->get();
+            return Cliente::select(['id', 'razao_social', 'nome_fantasia', 'cpf_cnpj'])->where('ativo', '=', false)->get();
         });
 
         return view('cadastros.cliente.inativos')
@@ -131,12 +115,9 @@ class ClienteController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Cliente  $cliente
-     * @return \Illuminate\Http\Response
+     * Update the specified resource in storage.
      */
-    public function inativarAtivar(Cliente $cliente)
+    public function inativarAtivar(Cliente $cliente): RedirectResponse
     {
         Cache::forget('clientes');
         Cache::forget('clientes-inativas');

@@ -11,16 +11,16 @@ use Illuminate\Support\Facades\DB;
 class Cliente extends Model
 {
     use HasFactory;
-
+    
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $fillable = [
         'razao_social', 
         'nome_fantasia',
-        'cnpj',
+        'cpf_cnpj',
         'inscricao_estadual',
         'site',
         'endereco_id'
@@ -32,7 +32,7 @@ class Cliente extends Model
                 'clientes.id',
                 'clientes.razao_social',
                 'clientes.nome_fantasia',
-                'clientes.cnpj',
+                'clientes.cpf_cnpj',
                 'clientes.inscricao_estadual',
                 'clientes.site',
                 'enderecos.id as endereco_id', 
@@ -65,7 +65,7 @@ class Cliente extends Model
             $cliente = Cliente::create([
                 'razao_social' => $dados->razao_social,
                 'nome_fantasia' => $dados->nome_fantasia,
-                'cnpj' => ManipulacaoString::limpaString($dados->cnpj),
+                'cpf_cnpj' => ManipulacaoString::limpaString($dados->cpf_cnpj),
                 'inscricao_estadual' => $dados->inscricao_estadual,
                 'site' => $dados->site,
                 'endereco_id' => $enderecoId
@@ -104,7 +104,7 @@ class Cliente extends Model
             
             $cliente->razao_social = $dados->razao_social;
             $cliente->nome_fantasia = $dados->nome_fantasia;
-            $cliente->cnpj = ManipulacaoString::limpaString($dados->cnpj);
+            $cliente->cpf_cnpj = ManipulacaoString::limpaString($dados->cpf_cnpj);
             $cliente->inscricao_estadual = $dados->inscricao_estadual;
             $cliente->site = $dados->site;
 

@@ -6,16 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\TipoDespesa;
 use App\Http\Requests\StoreTipoDespesaRequest;
 use App\Http\Requests\UpdateTipoDespesaRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
 use Illuminate\Support\Facades\Cache;
 
 class TipoDespesaController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         $tipoDespesas = Cache::rememberForever('tipo-despesas', function () {
             return TipoDespesa::select(['id', 'nome', 'descricao'])->where('ativo', '=', true)->get();
@@ -27,21 +28,16 @@ class TipoDespesaController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         return view('cadastros.tipo-despesa.create-edit');
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreFornecedorRequest  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(StoreTipoDespesaRequest $request)
+    public function store(StoreTipoDespesaRequest $request): RedirectResponse
     {
         Cache::forget('tipo-despesas');
 
@@ -56,11 +52,8 @@ class TipoDespesaController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\TipoDespesa  $tipoDespesa
-     * @return \Illuminate\Http\Response
      */
-    public function edit(TipoDespesa $tipoDespesa)
+    public function edit(TipoDespesa $tipoDespesa): View
     {
         return view('cadastros.tipo-despesa.create-edit')
             ->with('tipoDespesa', $tipoDespesa);
@@ -68,12 +61,8 @@ class TipoDespesaController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateTipoDespesaRequest  $request
-     * @param  \App\Models\TipoDespesa  $tipoDespesa
-     * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTipoDespesaRequest $request, TipoDespesa $tipoDespesa)
+    public function update(UpdateTipoDespesaRequest $request, TipoDespesa $tipoDespesa): RedirectResponse
     {
         Cache::forget('tipo-despesas');
         
@@ -87,11 +76,8 @@ class TipoDespesaController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\TipoDespesa  $tipoDespesa
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(TipoDespesa $tipoDespesa)
+    public function destroy(TipoDespesa $tipoDespesa): RedirectResponse
     {
         Cache::forget('tipo-despesas-inativas');
         
@@ -104,9 +90,8 @@ class TipoDespesaController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
-    public function inativos()
+    public function inativos(): View
     {
         $tipoDespesas = Cache::rememberForever('tipo-despesas-inativas', function () {
             return TipoDespesa::select(['id', 'nome', 'descricao'])->where('ativo', '=', false)->get();
@@ -117,12 +102,9 @@ class TipoDespesaController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\TipoDespesa  $reguladora
-     * @return \Illuminate\Http\Response
+     * Update the specified resource in storage.
      */
-    public function inativarAtivar(TipoDespesa $tipoDespesa)
+    public function inativarAtivar(TipoDespesa $tipoDespesa): RedirectResponse
     {
         Cache::forget('tipo-despesas');
         Cache::forget('tipo-despesas-inativas');

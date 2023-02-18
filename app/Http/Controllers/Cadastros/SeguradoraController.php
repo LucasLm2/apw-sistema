@@ -9,16 +9,17 @@ use App\Http\Requests\UpdateSeguradoraRequest;
 use App\Models\Email;
 use App\Models\Endereco\Estado;
 use App\Models\Telefone;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
 use Illuminate\Support\Facades\Cache;
 
 class SeguradoraController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         $seguradoras = Cache::rememberForever('seguradoras', function () {
             return Seguradora::select(['id', 'razao_social', 'nome_fantasia', 'cnpj'])->where('ativo', '=', true)->get();
@@ -30,10 +31,8 @@ class SeguradoraController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         $estados = Cache::rememberForever('estados', function () {
             return Estado::select(['uf', 'nome'])->orderBy('nome')->get();
@@ -45,11 +44,8 @@ class SeguradoraController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreFornecedorRequest  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(StoreSeguradoraRequest $request)
+    public function store(StoreSeguradoraRequest $request): RedirectResponse
     {
         Cache::forget('seguradoras');
 
@@ -59,13 +55,11 @@ class SeguradoraController extends Controller
             ->with('success', "Seguradora '{$razaoSocial}' adicionada com sucesso.");
     }
 
+
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $seguradora
-     * @return \Illuminate\Http\Response
      */
-    public function edit(int $seguradora)
+    public function edit(int $seguradora): View
     {
         $seguradora = Seguradora::findWithEndereco($seguradora);
         $telefones = Telefone::allWithReference('seguradoras', $seguradora->id);
@@ -84,12 +78,8 @@ class SeguradoraController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateSeguradoraRequest  $request
-     * @param  \App\Models\Seguradora  $seguradora
-     * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSeguradoraRequest $request, Seguradora $seguradora)
+    public function update(UpdateSeguradoraRequest $request, Seguradora $seguradora): RedirectResponse
     {
         Cache::forget('seguradoras');
 
@@ -101,11 +91,8 @@ class SeguradoraController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Seguradora  $seguradora
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Seguradora $seguradora)
+    public function destroy(Seguradora $seguradora): RedirectResponse
     {
         Cache::forget('seguradoras-inativas');
 
@@ -118,9 +105,8 @@ class SeguradoraController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
-    public function inativos()
+    public function inativos(): View
     {
         $reguladorasInativas = Cache::rememberForever('seguradoras-inativas', function () {
             return Seguradora::select(['id', 'razao_social', 'nome_fantasia', 'cnpj'])->where('ativo', '=', false)->get();
@@ -131,12 +117,9 @@ class SeguradoraController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Seguradora  $seguradora
-     * @return \Illuminate\Http\Response
+     * Update the specified resource in storage.
      */
-    public function inativarAtivar(Seguradora $seguradora)
+    public function inativarAtivar(Seguradora $seguradora): RedirectResponse
     {
         Cache::forget('seguradoras');
         Cache::forget('seguradoras-inativas');

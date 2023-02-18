@@ -2,16 +2,19 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CelularComDdd;
+use App\Rules\Cnpj;
+use App\Rules\FormatoCep;
+use App\Rules\FormatoCnpj;
+use App\Rules\Uf;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateSeguradoraRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,9 +22,9 @@ class UpdateSeguradoraRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, mixed>
+     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'razao_social' => [
@@ -37,8 +40,8 @@ class UpdateSeguradoraRequest extends FormRequest
             'cnpj' => [
                 'required',
                 'string',
-                'formato_cnpj',
-                'cnpj',
+                new FormatoCnpj(),
+                new Cnpj(),
             ],
             'inscricao_estadual' => [
                 'nullable',
@@ -54,13 +57,13 @@ class UpdateSeguradoraRequest extends FormRequest
                 'nullable', 
                 'string', 
                 'max:10',
-                'formato_cep'
+                new FormatoCep()
             ],
             'estado' => [
                 'nullable', 
                 'string', 
                 'max:2',
-                'uf',
+                new Uf(),
             ],
             'municipio' => [
                 'nullable', 
@@ -90,7 +93,7 @@ class UpdateSeguradoraRequest extends FormRequest
             'telefones.*' => [
                 'nullable',
                 'string',
-                'celular_com_ddd'
+                new CelularComDdd()
             ],
             'emails.*' => [
                 'nullable',

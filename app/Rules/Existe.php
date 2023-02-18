@@ -3,30 +3,29 @@
 namespace App\Rules;
 
 use App\Helpers\ManipulacaoString;
-use Illuminate\Contracts\Validation\InvokableRule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Database\Eloquent\Model;
 
-class Existe implements InvokableRule
+class Existe implements ValidationRule
 {
+
     function __construct(private Model $class)
     {}
-
+    
     /**
      * Run the validation rule.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
-     * @return void
      */
-    public function __invoke($attribute, $value, $fail)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if($attribute == 'cnpj') {
+        if($attribute == 'cpf_cnpj') {
             $value = ManipulacaoString::limpaString($value);
         }
 
         if($this->class::where($attribute, '=', $value)->exists()) {
-            $fail('Este :attribute já esta cadastrado. Verifique se não esta inativado.');
+            $fail('Este CPF ou CNPJ já esta cadastrado. Verifique se não esta inativado.');
         }
     }
 }

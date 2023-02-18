@@ -3,17 +3,20 @@
 namespace App\Http\Requests;
 
 use App\Models\Reguladora;
+use App\Rules\CelularComDdd;
+use App\Rules\Cnpj;
 use App\Rules\Existe;
+use App\Rules\FormatoCep;
+use App\Rules\FormatoCnpj;
+use App\Rules\Uf;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreReguladoraRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,9 +24,9 @@ class StoreReguladoraRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, mixed>
+     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'razao_social' => [
@@ -39,8 +42,8 @@ class StoreReguladoraRequest extends FormRequest
             'cnpj' => [
                 'required',
                 'string',
-                'formato_cnpj',
-                'cnpj',
+                new FormatoCnpj(),
+                new Cnpj(),
                 new Existe(new Reguladora())
             ],
             'inscricao_estadual' => [
@@ -57,13 +60,13 @@ class StoreReguladoraRequest extends FormRequest
                 'nullable', 
                 'string', 
                 'max:10',
-                'formato_cep'
+                new FormatoCep()
             ],
             'estado' => [
                 'nullable', 
                 'string', 
                 'max:2',
-                'uf',
+                new Uf(),
             ],
             'municipio' => [
                 'nullable', 
@@ -93,7 +96,7 @@ class StoreReguladoraRequest extends FormRequest
             'telefones.*' => [
                 'nullable',
                 'string',
-                'celular_com_ddd'
+                new CelularComDdd()
             ],
             'emails.*' => [
                 'nullable',
