@@ -21,8 +21,12 @@
                         <th class="col-5">{{ __('Razão Social') }}</th>
                         <th class="col-2">{{ __('CPF/CNPJ') }}</th>
                         <th class="col-4">{{ __('Nome Fantasia') }}</th>
-                        <th class="col-1 text-center" data-orderable="false">{{ __('Ativar') }}</th>
-                        <th class="col-1 text-center" data-orderable="false">{{ __('Delete') }}</th>
+                        @can('cliente-inativar')
+                            <th class="col-1 text-center" data-orderable="false">{{ __('Ativar') }}</th>
+                        @endcan
+                        @can('cliente-deletar')
+                            <th class="col-1 text-center" data-orderable="false">{{ __('Delete') }}</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>        
@@ -31,44 +35,48 @@
                             <td>{{ $cliente->razao_social }}</td>
                             <td class="cpf-cnpj-mask">{{ $cliente->cpf_cnpj }}</td>
                             <td>{{ $cliente->nome_fantasia }}</td>
-                            <td class="text-center">
-                                <a 
-                                    class="text-success"
-                                    href="{{ route('cadastro.cliente.inativar-ativar', $cliente->id) }}"
-                                    onclick="event.preventDefault();
-                                        ativar('cliente-{{ $cliente->id }}-form-inativar-ativar');"
-                                >
-                                    <i class="fa-solid fa-check-to-slot"></i>
-                                </a>
-                                <form 
-                                    id="cliente-{{ $cliente->id }}-form-inativar-ativar" 
-                                    action="{{ route('cadastro.cliente.inativar-ativar', $cliente->id) }}" 
-                                    method="POST" 
-                                    class="d-none"
-                                >
-                                    @csrf
-                                    @method('PUT');
-                                </form>
-                            </td>
-                            <td class="text-center">
-                                <a 
-                                    class="text-danger"
-                                    href="{{ route('cadastro.cliente.destroy', $cliente->id) }}"
-                                    onclick="event.preventDefault();
-                                        excluir('cliente-{{ $cliente->id }}-form');"
-                                >
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
-                                <form 
-                                    id="cliente-{{ $cliente->id }}-form" 
-                                    action="{{ route('cadastro.cliente.destroy', $cliente->id) }}" 
-                                    method="POST" 
-                                    class="d-none"
-                                >
-                                    @csrf
-                                    @method('DELETE');
-                                </form>
-                            </td>
+                            @can('cliente-inativar')
+                                <td class="text-center">
+                                    <a 
+                                        class="text-success"
+                                        href="{{ route('cadastro.cliente.inativar-ativar', $cliente->id) }}"
+                                        onclick="event.preventDefault();
+                                            ativar('cliente-{{ $cliente->id }}-form-inativar-ativar');"
+                                    >
+                                        <i class="fa-solid fa-check-to-slot"></i>
+                                    </a>
+                                    <form 
+                                        id="cliente-{{ $cliente->id }}-form-inativar-ativar" 
+                                        action="{{ route('cadastro.cliente.inativar-ativar', $cliente->id) }}" 
+                                        method="POST" 
+                                        class="d-none"
+                                    >
+                                        @csrf
+                                        @method('PUT');
+                                    </form>
+                                </td>
+                            @endcan
+                            @can('cliente-deletar')
+                                <td class="text-center">
+                                    <a 
+                                        class="text-danger"
+                                        href="{{ route('cadastro.cliente.destroy', $cliente->id) }}"
+                                        onclick="event.preventDefault();
+                                            excluir('cliente-{{ $cliente->id }}-form');"
+                                    >
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                    <form 
+                                        id="cliente-{{ $cliente->id }}-form" 
+                                        action="{{ route('cadastro.cliente.destroy', $cliente->id) }}" 
+                                        method="POST" 
+                                        class="d-none"
+                                    >
+                                        @csrf
+                                        @method('DELETE');
+                                    </form>
+                                </td>
+                            @endcan
                         </tr>
                     @endforeach
                 </tbody>

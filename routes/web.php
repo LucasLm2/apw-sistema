@@ -10,6 +10,7 @@ use App\Http\Controllers\Cadastros\ClienteController;
 use App\Http\Controllers\Cadastros\SeguradoraController;
 use App\Http\Controllers\Cadastros\TipoDespesaController;
 use App\Http\Controllers\Cadastros\TipoServicoController;
+use App\Http\Controllers\Cadastros\UsuarioController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,13 +37,29 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/password/confirm', [ConfirmPasswordController::class, 'showConfirmForm'])->name('password.confirm');
     Route::post('/password/confirm', [ConfirmPasswordController::class, 'confirm']);
 
-    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-    Route::post('/register', [RegisterController::class, 'register']);
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     // Cadastros
     Route::prefix('cadastro')->group(function () {
         Route::name('cadastro.')->group(function () {
+
+            // Route::resource('permissao', PermissaoController::class);
+            // Route::prefix('/permissao')->group(function () {
+            //     Route::name('permissao.')->group(function () {
+            //         Route::get('/inativos', [ReguladoraController::class, 'inativos'])->name('inativos');
+            //         Route::put('/{reguladora}/inativar-ativar', [ReguladoraController::class, 'inativarAtivar'])
+            //             ->name('inativar-ativar');
+            //     });
+            // });
+
+            Route::resource('usuario', UsuarioController::class)->except('show');
+            Route::prefix('/usuario')->group(function () {
+                Route::name('usuario.')->group(function () {
+                    Route::get('/inativos', [UsuarioController::class, 'inativos'])->name('inativos');
+                    Route::put('/{reguladora}/inativar-ativar', [UsuarioController::class, 'inativarAtivar'])
+                        ->name('inativar-ativar');
+                });
+            });
 
             Route::resource('reguladora', ReguladoraController::class)->except('show');
             Route::prefix('/reguladora')->group(function () {

@@ -10,12 +10,23 @@ use App\Models\Email;
 use App\Models\Endereco\Estado;
 use App\Models\Telefone;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Cache;
 
 class ReguladoraController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware(
+            'permission:reguladora-listar|reguladora-cadastrar|reguladora-editar|reguladora-inativar|reguladora-deletar', 
+            ['only' => ['index','store']]
+        );
+        $this->middleware('permission:reguladora-cadastrar', ['only' => ['create','store']]);
+        $this->middleware('permission:reguladora-editar', ['only' => ['edit','update']]);
+        $this->middleware('permission:reguladora-inativar', ['only' => ['inativos','inativarAtivar']]);
+        $this->middleware('permission:reguladora-deletar', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      */

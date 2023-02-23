@@ -10,12 +10,23 @@ use App\Models\Email;
 use App\Models\Endereco\Estado;
 use App\Models\Telefone;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Cache;
 
 class SeguradoraController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware(
+            'permission:seguradora-listar|seguradora-cadastrar|seguradora-editar|seguradora-inativar|seguradora-deletar', 
+            ['only' => ['index','store']]
+        );
+        $this->middleware('permission:seguradora-cadastrar', ['only' => ['create','store']]);
+        $this->middleware('permission:seguradora-editar', ['only' => ['edit','update']]);
+        $this->middleware('permission:seguradora-inativar', ['only' => ['inativos','inativarAtivar']]);
+        $this->middleware('permission:seguradora-deletar', ['only' => ['destroy']]);
+    }
+    
     /**
      * Display a listing of the resource.
      */

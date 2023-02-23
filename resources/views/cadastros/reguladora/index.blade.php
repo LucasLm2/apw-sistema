@@ -7,12 +7,16 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>{{ __('Reguladoras') }}</div>
                 <div>
-                    <a href="{{ route('cadastro.reguladora.create') }}" class="btn btn-primary">
-                        {{ __('New') }}
-                    </a>
-                    <a href="{{ route('cadastro.reguladora.inativos') }}" class="btn btn-secondary">
-                        {{ __('Inativos') }}
-                    </a>
+                    @can('reguladora-cadastrar')
+                        <a href="{{ route('cadastro.reguladora.create') }}" class="btn btn-primary">
+                            {{ __('New') }}
+                        </a>
+                    @endcan
+                    @can('reguladora-inativar')
+                        <a href="{{ route('cadastro.reguladora.inativos') }}" class="btn btn-secondary">
+                            {{ __('Inativos') }}
+                        </a>
+                    @endcan
                 </div>
             </div>
         </div>
@@ -24,8 +28,12 @@
                         <th class="col-5">{{ __('Razão Social') }}</th>
                         <th class="col-2">{{ __('CNPJ') }}</th>
                         <th class="col-4">{{ __('Nome Fantasia') }}</th>
-                        <th class="col-1 text-center" data-orderable="false">{{ __('Edit') }}</th>
-                        <th class="col-1 text-center" data-orderable="false">{{ __('Inativar') }}</th>
+                        @can('reguladora-editar')
+                            <th class="col-1 text-center" data-orderable="false">{{ __('Edit') }}</th>
+                        @endcan
+                        @can('reguladora-inativar')
+                            <th class="col-1 text-center" data-orderable="false">{{ __('Inativar') }}</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>        
@@ -34,33 +42,37 @@
                             <td>{{ $reguladora->razao_social }}</td>
                             <td class="label-cnpj" data-inputmask="'mask': '99.999.999/9999-99'">{{ $reguladora->cnpj }}</td>
                             <td>{{ $reguladora->nome_fantasia }}</td>
-                            <td class="text-center">
-                                <a 
-                                    class="text-success"
-                                    href="{{ route('cadastro.reguladora.edit', $reguladora->id) }}"
-                                >
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
-                            </td>
-                            <td class="text-center">
-                                <a 
-                                    class="text-danger"
-                                    href="{{ route('cadastro.reguladora.inativar-ativar', $reguladora->id) }}"
-                                    onclick="event.preventDefault();
-                                        inativar('reguladora-{{ $reguladora->id }}-form-inativar-ativar');"
-                                >
-                                    <i class="fa-solid fa-delete-left"></i>
-                                </a>
-                                <form 
-                                    id="reguladora-{{ $reguladora->id }}-form-inativar-ativar" 
-                                    action="{{ route('cadastro.reguladora.inativar-ativar', $reguladora->id) }}" 
-                                    method="POST" 
-                                    class="d-none"
-                                >
-                                    @csrf
-                                    @method('PUT');
-                                </form>
-                            </td>
+                            @can('reguladora-editar')
+                                <td class="text-center">
+                                    <a 
+                                        class="text-success"
+                                        href="{{ route('cadastro.reguladora.edit', $reguladora->id) }}"
+                                    >
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                </td>
+                            @endcan
+                            @can('reguladora-inativar')
+                                <td class="text-center">
+                                    <a 
+                                        class="text-danger"
+                                        href="{{ route('cadastro.reguladora.inativar-ativar', $reguladora->id) }}"
+                                        onclick="event.preventDefault();
+                                            inativar('reguladora-{{ $reguladora->id }}-form-inativar-ativar');"
+                                    >
+                                        <i class="fa-solid fa-delete-left"></i>
+                                    </a>
+                                    <form 
+                                        id="reguladora-{{ $reguladora->id }}-form-inativar-ativar" 
+                                        action="{{ route('cadastro.reguladora.inativar-ativar', $reguladora->id) }}" 
+                                        method="POST" 
+                                        class="d-none"
+                                    >
+                                        @csrf
+                                        @method('PUT');
+                                    </form>
+                                </td>
+                            @endcan
                         </tr>
                     @endforeach
                 </tbody>

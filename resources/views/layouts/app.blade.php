@@ -45,61 +45,76 @@
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('home') ? 'active':'' }}" href="{{ route('home') }}">{{ __('Home') }}</a>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                  Cadastros
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a 
-                                            class="dropdown-item {{ request()->routeIs('cadastro.cliente.index') ? 'active':'' }}" 
-                                            href="{{ route('cadastro.cliente.index') }}"
-                                        >
-                                            {{ __('Clientes') }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a 
-                                            class="dropdown-item {{ request()->routeIs('cadastro.reguladora.index') ? 'active':'' }}" 
-                                            href="{{ route('cadastro.reguladora.index') }}"
-                                        >
-                                            {{ __('Reguladoras') }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a 
-                                            class="dropdown-item {{ request()->routeIs('cadastro.seguradora.index') ? 'active':'' }}" 
-                                            href="{{ route('cadastro.seguradora.index') }}"
-                                        >
-                                            {{ __('Seguradoras') }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a 
-                                            class="dropdown-item {{ request()->routeIs('cadastro.tipo-despesa.index') ? 'active':'' }}" 
-                                            href="{{ route('cadastro.tipo-despesa.index') }}"
-                                        >
-                                            {{ __('Tipo de despesas') }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a 
-                                            class="dropdown-item {{ request()->routeIs('cadastro.tipo-servico.index') ? 'active':'' }}" 
-                                            href="{{ route('cadastro.tipo-servico.index') }}"
-                                        >
-                                            {{ __('Tipo de serviços') }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a 
-                                            class="dropdown-item {{ request()->routeIs('register') ? 'active':'' }}" 
-                                            href="{{ route('register') }}"
-                                        >
-                                            {{ __('Usuários') }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                            @can('cadastros')
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Cadastros
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        @can('cadastro-cliente')
+                                            <li>
+                                                <a 
+                                                    class="dropdown-item {{ request()->routeIs('cadastro.cliente.index') ? 'active':'' }}" 
+                                                    href="{{ route('cadastro.cliente.index') }}"
+                                                >
+                                                    {{ __('Clientes') }}
+                                                </a>
+                                            </li>
+                                        @endcan
+                                        @can('cadastro-reguladora')
+                                            <li>
+                                                <a 
+                                                    class="dropdown-item {{ request()->routeIs('cadastro.reguladora.index') ? 'active':'' }}" 
+                                                    href="{{ route('cadastro.reguladora.index') }}"
+                                                >
+                                                    {{ __('Reguladoras') }}
+                                                </a>
+                                            </li>
+                                        @endcan
+                                        @can('cadastro-seguradora')
+                                            <li>
+                                                <a 
+                                                    class="dropdown-item {{ request()->routeIs('cadastro.seguradora.index') ? 'active':'' }}" 
+                                                    href="{{ route('cadastro.seguradora.index') }}"
+                                                >
+                                                    {{ __('Seguradoras') }}
+                                                </a>
+                                            </li>
+                                        @endcan
+                                        @can('cadastro-tipo-despesa')
+                                            <li>
+                                                <a 
+                                                    class="dropdown-item {{ request()->routeIs('cadastro.tipo-despesa.index') ? 'active':'' }}" 
+                                                    href="{{ route('cadastro.tipo-despesa.index') }}"
+                                                >
+                                                    {{ __('Tipo de despesas') }}
+                                                </a>
+                                            </li>
+                                        @endcan
+                                        @can('cadastro-tipo-servico')
+                                            <li>
+                                                <a 
+                                                    class="dropdown-item {{ request()->routeIs('cadastro.tipo-servico.index') ? 'active':'' }}" 
+                                                    href="{{ route('cadastro.tipo-servico.index') }}"
+                                                >
+                                                    {{ __('Tipo de serviços') }}
+                                                </a>
+                                            </li>
+                                        @endcan
+                                        @can('cadastro-usuario')
+                                            <li>
+                                                <a 
+                                                    class="dropdown-item {{ request()->routeIs('cadastro.usuario.index') ? 'active':'' }}" 
+                                                    href="{{ route('cadastro.usuario.index') }}"
+                                                >
+                                                    {{ __('Usuários') }}
+                                                </a>
+                                            </li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcan
+                            
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
