@@ -14,7 +14,7 @@ class Cpf implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if($this->calcCpf($value)) {
+        if(!$this->calcCpf($value)) {
             $fail('O campo :attribute não é um CPF válido.');
         }
     }
