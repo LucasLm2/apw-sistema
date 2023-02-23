@@ -8,11 +8,22 @@ use App\Http\Requests\StoreTipoServicoRequest;
 use App\Http\Requests\UpdateTipoServicoRequest;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 
 class TipoServicoController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware(
+            'permission:tipo-servico-listar|tipo-servico-cadastrar|tipo-servico-editar|tipo-servico-inativar|tipo-servico-deletar', 
+            ['only' => ['index','store']]
+        );
+        $this->middleware('permission:tipo-servico-cadastrar', ['only' => ['create','store']]);
+        $this->middleware('permission:tipo-servico-editar', ['only' => ['edit','update']]);
+        $this->middleware('permission:tipo-servico-inativar', ['only' => ['inativos','inativarAtivar']]);
+        $this->middleware('permission:tipo-servico-deletar', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      */

@@ -21,8 +21,12 @@
                         <th class="col-5">{{ __('Razão Social') }}</th>
                         <th class="col-2">{{ __('CNPJ') }}</th>
                         <th class="col-4">{{ __('Nome Fantasia') }}</th>
-                        <th class="col-1 text-center">{{ __('Ativar') }}</th>
-                        <th class="col-1 text-center">{{ __('Delete') }}</th>
+                        @can('seguradora-inativar')
+                            <th class="col-1 text-center">{{ __('Ativar') }}</th>
+                        @endcan
+                        @can('seguradora-deletar')
+                            <th class="col-1 text-center">{{ __('Delete') }}</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>        
@@ -31,44 +35,48 @@
                             <td>{{ $seguradora->razao_social }}</td>
                             <td class="label-cnpj" data-inputmask="'mask': '99.999.999/9999-99'">{{ $seguradora->cnpj }}</td>
                             <td>{{ $seguradora->nome_fantasia }}</td>
-                            <td class="text-center">
-                                <a 
-                                    class="text-success"
-                                    href="{{ route('cadastro.seguradora.inativar-ativar', $seguradora->id) }}"
-                                    onclick="event.preventDefault();
-                                        ativar('seguradora-{{ $seguradora->id }}-form-inativar-ativar');"
-                                >
-                                    <i class="fa-solid fa-check-to-slot"></i>
-                                </a>
-                                <form 
-                                    id="seguradora-{{ $seguradora->id }}-form-inativar-ativar" 
-                                    action="{{ route('cadastro.seguradora.inativar-ativar', $seguradora->id) }}" 
-                                    method="POST" 
-                                    class="d-none"
-                                >
-                                    @csrf
-                                    @method('PUT');
-                                </form>
-                            </td>
-                            <td class="text-center">
-                                <a 
-                                    class="text-danger"
-                                    href="{{ route('cadastro.seguradora.destroy', $seguradora->id) }}"
-                                    onclick="event.preventDefault();
-                                        excluir('seguradora-{{ $seguradora->id }}-form');"
-                                >
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
-                                <form 
-                                    id="seguradora-{{ $seguradora->id }}-form" 
-                                    action="{{ route('cadastro.seguradora.destroy', $seguradora->id) }}" 
-                                    method="POST" 
-                                    class="d-none"
-                                >
-                                    @csrf
-                                    @method('DELETE');
-                                </form>
-                            </td>
+                            @can('seguradora-inativar')
+                                <td class="text-center">
+                                    <a 
+                                        class="text-success"
+                                        href="{{ route('cadastro.seguradora.inativar-ativar', $seguradora->id) }}"
+                                        onclick="event.preventDefault();
+                                            ativar('seguradora-{{ $seguradora->id }}-form-inativar-ativar');"
+                                    >
+                                        <i class="fa-solid fa-check-to-slot"></i>
+                                    </a>
+                                    <form 
+                                        id="seguradora-{{ $seguradora->id }}-form-inativar-ativar" 
+                                        action="{{ route('cadastro.seguradora.inativar-ativar', $seguradora->id) }}" 
+                                        method="POST" 
+                                        class="d-none"
+                                    >
+                                        @csrf
+                                        @method('PUT');
+                                    </form>
+                                </td>
+                            @endcan
+                            @can('seguradora-deletar')
+                                <td class="text-center">
+                                    <a 
+                                        class="text-danger"
+                                        href="{{ route('cadastro.seguradora.destroy', $seguradora->id) }}"
+                                        onclick="event.preventDefault();
+                                            excluir('seguradora-{{ $seguradora->id }}-form');"
+                                    >
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                    <form 
+                                        id="seguradora-{{ $seguradora->id }}-form" 
+                                        action="{{ route('cadastro.seguradora.destroy', $seguradora->id) }}" 
+                                        method="POST" 
+                                        class="d-none"
+                                    >
+                                        @csrf
+                                        @method('DELETE');
+                                    </form>
+                                </td>
+                            @endcan
                         </tr>
                     @endforeach
                 </tbody>

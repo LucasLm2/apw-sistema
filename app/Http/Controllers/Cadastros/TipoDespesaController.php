@@ -7,12 +7,23 @@ use App\Models\TipoDespesa;
 use App\Http\Requests\StoreTipoDespesaRequest;
 use App\Http\Requests\UpdateTipoDespesaRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Cache;
 
 class TipoDespesaController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware(
+            'permission:tipo-despesa-listar|tipo-despesa-cadastrar|tipo-despesa-editar|tipo-despesa-inativar|tipo-despesa-deletar', 
+            ['only' => ['index','store']]
+        );
+        $this->middleware('permission:tipo-despesa-cadastrar', ['only' => ['create','store']]);
+        $this->middleware('permission:tipo-despesa-editar', ['only' => ['edit','update']]);
+        $this->middleware('permission:tipo-despesa-inativar', ['only' => ['inativos','inativarAtivar']]);
+        $this->middleware('permission:tipo-despesa-deletar', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      */

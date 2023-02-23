@@ -5,9 +5,9 @@
     <div class="card">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-                <div>{{ __('Tipo de despesas inativas') }}</div>
+                <div>{{ __('Usuários') }}</div>
                 <div>
-                    <a href="{{ route('cadastro.tipo-despesa.index') }}" class="btn btn-primary">
+                    <a href="{{ route('cadastro.usuario.index') }}" class="btn btn-primary">
                         {{ __('Return') }}
                     </a>
                 </div>
@@ -19,33 +19,41 @@
                 <thead>
                     <tr>
                         <th class="col-3">{{ __('Name') }}</th>
-                        <th class="col-8">{{ __('Description') }}</th>
-                        @can('tipo-despesa-inativar')
+                        <th class="col-4">{{ __('Email') }}</th>
+                        <th class="col-8">{{ __('Permissões') }}</th>
+                        @can('usuario-inativar')
                             <th class="col-1 text-center" data-orderable="false">{{ __('Ativar') }}</th>
                         @endcan
-                        @can('tipo-despesa-deletar')
+                        @can('usuario-deletar')
                             <th class="col-1 text-center" data-orderable="false">{{ __('Delete') }}</th>
                         @endcan
                     </tr>
                 </thead>
                 <tbody>        
-                    @foreach ($tipoDespesas as $tipoDespesas) 
+                    @foreach ($users as $key => $user)
                         <tr>
-                            <td>{{ $tipoDespesas->nome }}</td>
-                            <td>{{ $tipoDespesas->descricao }}</td>
-                            @can('tipo-despesa-inativar')
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td>
+                                @if(!empty($user->getRoleNames()))
+                                    @foreach($user->getRoleNames() as $role)
+                                        <span class="badge bg-success h6">{{ $role }}</span>
+                                    @endforeach
+                                @endif
+                            </td>
+                            @can('usuario-inativar')
                                 <td class="text-center">
                                     <a 
                                         class="text-success"
-                                        href="{{ route('cadastro.tipo-despesa.inativar-ativar', $tipoDespesas->id) }}"
+                                        href="{{ route('cadastro.usuario.inativar-ativar', $user->id) }}"
                                         onclick="event.preventDefault();
-                                            ativar('tipo-despesa-{{ $tipoDespesas->id }}-form-inativar-ativar');"
+                                            ativar('usuario-{{ $user->id }}-form-inativar-ativar');"
                                     >
                                         <i class="fa-solid fa-check-to-slot"></i>
                                     </a>
                                     <form 
-                                        id="tipo-despesa-{{ $tipoDespesas->id }}-form-inativar-ativar" 
-                                        action="{{ route('cadastro.tipo-despesa.inativar-ativar', $tipoDespesas->id) }}" 
+                                        id="usuario-{{ $user->id }}-form-inativar-ativar" 
+                                        action="{{ route('cadastro.usuario.inativar-ativar', $user->id) }}" 
                                         method="POST" 
                                         class="d-none"
                                     >
@@ -54,19 +62,19 @@
                                     </form>
                                 </td>
                             @endcan
-                            @can('tipo-despesa-deletar')
+                            @can('usuario-deletar')
                                 <td class="text-center">
                                     <a 
                                         class="text-danger"
-                                        href="{{ route('cadastro.tipo-despesa.destroy', $tipoDespesas->id) }}"
+                                        href="{{ route('cadastro.usuario.destroy', $user->id) }}"
                                         onclick="event.preventDefault();
-                                            excluir('tipo-despesa-{{ $tipoDespesas->id }}-form');"
+                                            excluir('usuario-{{ $user->id }}-form');"
                                     >
                                         <i class="fa-solid fa-trash"></i>
                                     </a>
                                     <form 
-                                        id="tipo-despesa-{{ $tipoDespesas->id }}-form" 
-                                        action="{{ route('cadastro.tipo-despesa.destroy', $tipoDespesas->id) }}" 
+                                        id="usuario-{{ $user->id }}-form" 
+                                        action="{{ route('cadastro.usuario.destroy', $user->id) }}" 
                                         method="POST" 
                                         class="d-none"
                                     >

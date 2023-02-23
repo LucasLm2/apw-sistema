@@ -10,12 +10,23 @@ use App\Models\Email;
 use App\Models\Endereco\Estado;
 use App\Models\Telefone;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Cache;
 
 class ClienteController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware(
+            'permission:cliente-listar|cliente-cadastrar|cliente-editar|cliente-inativar|cliente-deletar', 
+            ['only' => ['index','store']]
+        );
+        $this->middleware('permission:cliente-cadastrar', ['only' => ['create','store']]);
+        $this->middleware('permission:cliente-editar', ['only' => ['edit','update']]);
+        $this->middleware('permission:cliente-inativar', ['only' => ['inativos','inativarAtivar']]);
+        $this->middleware('permission:cliente-deletar', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      */

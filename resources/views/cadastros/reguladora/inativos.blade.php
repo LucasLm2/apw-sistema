@@ -21,8 +21,12 @@
                         <th class="col-5">{{ __('Razão Social') }}</th>
                         <th class="col-2">{{ __('CNPJ') }}</th>
                         <th class="col-4">{{ __('Nome Fantasia') }}</th>
-                        <th class="col-1 text-center" data-orderable="false">{{ __('Ativar') }}</th>
-                        <th class="col-1 text-center" data-orderable="false">{{ __('Delete') }}</th>
+                        @can('reguladora-inativar')
+                            <th class="col-1 text-center" data-orderable="false">{{ __('Ativar') }}</th>
+                        @endcan
+                        @can('reguladora-deletar')
+                            <th class="col-1 text-center" data-orderable="false">{{ __('Delete') }}</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>        
@@ -31,44 +35,48 @@
                             <td>{{ $reguladora->razao_social }}</td>
                             <td class="label-cnpj" data-inputmask="'mask': '99.999.999/9999-99'">{{ $reguladora->cnpj }}</td>
                             <td>{{ $reguladora->nome_fantasia }}</td>
-                            <td class="text-center">
-                                <a 
-                                    class="text-success"
-                                    href="{{ route('cadastro.reguladora.inativar-ativar', $reguladora->id) }}"
-                                    onclick="event.preventDefault();
-                                        ativar('reguladora-{{ $reguladora->id }}-form-inativar-ativar');"
-                                >
-                                    <i class="fa-solid fa-check-to-slot"></i>
-                                </a>
-                                <form 
-                                    id="reguladora-{{ $reguladora->id }}-form-inativar-ativar" 
-                                    action="{{ route('cadastro.reguladora.inativar-ativar', $reguladora->id) }}" 
-                                    method="POST" 
-                                    class="d-none"
-                                >
-                                    @csrf
-                                    @method('PUT');
-                                </form>
-                            </td>
-                            <td class="text-center">
-                                <a 
-                                    class="text-danger"
-                                    href="{{ route('cadastro.reguladora.destroy', $reguladora->id) }}"
-                                    onclick="event.preventDefault();
-                                        excluir('reguladora-{{ $reguladora->id }}-form');"
-                                >
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
-                                <form 
-                                    id="reguladora-{{ $reguladora->id }}-form" 
-                                    action="{{ route('cadastro.reguladora.destroy', $reguladora->id) }}" 
-                                    method="POST" 
-                                    class="d-none"
-                                >
-                                    @csrf
-                                    @method('DELETE');
-                                </form>
-                            </td>
+                            @can('reguladora-inativar')
+                                <td class="text-center">
+                                    <a 
+                                        class="text-success"
+                                        href="{{ route('cadastro.reguladora.inativar-ativar', $reguladora->id) }}"
+                                        onclick="event.preventDefault();
+                                            ativar('reguladora-{{ $reguladora->id }}-form-inativar-ativar');"
+                                    >
+                                        <i class="fa-solid fa-check-to-slot"></i>
+                                    </a>
+                                    <form 
+                                        id="reguladora-{{ $reguladora->id }}-form-inativar-ativar" 
+                                        action="{{ route('cadastro.reguladora.inativar-ativar', $reguladora->id) }}" 
+                                        method="POST" 
+                                        class="d-none"
+                                    >
+                                        @csrf
+                                        @method('PUT');
+                                    </form>
+                                </td>
+                            @endcan
+                            @can('reguladora-deletar')
+                                <td class="text-center">
+                                    <a 
+                                        class="text-danger"
+                                        href="{{ route('cadastro.reguladora.destroy', $reguladora->id) }}"
+                                        onclick="event.preventDefault();
+                                            excluir('reguladora-{{ $reguladora->id }}-form');"
+                                    >
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                    <form 
+                                        id="reguladora-{{ $reguladora->id }}-form" 
+                                        action="{{ route('cadastro.reguladora.destroy', $reguladora->id) }}" 
+                                        method="POST" 
+                                        class="d-none"
+                                    >
+                                        @csrf
+                                        @method('DELETE');
+                                    </form>
+                                </td>
+                            @endcan
                         </tr>
                     @endforeach
                 </tbody>
