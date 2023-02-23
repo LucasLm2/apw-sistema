@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 
 class UsersDefaultSeeder extends Seeder
 {
@@ -24,7 +25,16 @@ class UsersDefaultSeeder extends Seeder
         ]);
 
         $role = Role::create(['name' => 'Desenvolvedor']);
-       
+
+        $user->assignRole([$role->id]);
+
+        $user = User::create([
+            'name' => 'Gustavo Thales Valgoi de Almeida',
+            'email' => 'guss.oitenta@gmail.com',
+            'email_verified_at' => now(),
+            'password' => '$10$E1oA9aaEIa.UKOWlMu.ZfuxMdJCKb4Ua7VoqsgbJi80V8TuaK8ZMi',
+        ]);
+
         $user->assignRole([$role->id]);
 
         $user = User::create([
@@ -36,16 +46,16 @@ class UsersDefaultSeeder extends Seeder
         ]);
 
         $role = Role::create(['name' => 'Administrador']);
-       
+
         $permissions = Permission::select('id')->where(DB::raw('REVERSE(name)'), 'NOT LIKE', 'rateled-%')->get();
-        
+
         $ids = [];
         foreach($permissions as $permission) {
             $ids[] = $permission->id;
         }
 
         $role->syncPermissions($ids);
-       
+
         $user->assignRole([$role->id]);
     }
 }
