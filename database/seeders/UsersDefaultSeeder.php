@@ -32,7 +32,7 @@ class UsersDefaultSeeder extends Seeder
             'name' => 'Gustavo Thales Valgoi de Almeida',
             'email' => 'guss.oitenta@gmail.com',
             'email_verified_at' => now(),
-            'password' => '$10$E1oA9aaEIa.UKOWlMu.ZfuxMdJCKb4Ua7VoqsgbJi80V8TuaK8ZMi',
+            'password' => '$10$A/U9jt3YZC/LpS9AH5.wJ.4rYKK2WQtKWZRU.7YwpkHiTtUCIZAXK', // Hash::make('your_pass')
         ]);
 
         $user->assignRole([$role->id]);

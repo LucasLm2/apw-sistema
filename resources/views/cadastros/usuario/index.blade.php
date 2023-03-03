@@ -36,7 +36,7 @@
                         @endcan
                     </tr>
                 </thead>
-                <tbody>        
+                <tbody>
                     @foreach ($users as $key => $user)
                         <tr>
                             <td>{{ $user->name }}</td>
@@ -50,7 +50,7 @@
                             </td>
                             @can('usuario-editar')
                                 <td class="text-center">
-                                    <a 
+                                    <a
                                         class="text-success"
                                         href="{{ route('cadastro.usuario.edit', $user->id) }}"
                                     >
@@ -60,7 +60,7 @@
                             @endcan
                             @can('usuario-inativar')
                                 <td class="text-center">
-                                    <a 
+                                    <a
                                         class="text-danger"
                                         href="{{ route('cadastro.usuario.inativar-ativar', $user->id) }}"
                                         onclick="event.preventDefault();
@@ -68,10 +68,10 @@
                                     >
                                         <i class="fa-solid fa-delete-left"></i>
                                     </a>
-                                    <form 
-                                        id="usuario-{{ $user->id }}-form-inativar-ativar" 
-                                        action="{{ route('cadastro.usuario.inativar-ativar', $user->id) }}" 
-                                        method="POST" 
+                                    <form
+                                        id="usuario-{{ $user->id }}-form-inativar-ativar"
+                                        action="{{ route('cadastro.usuario.inativar-ativar', $user->id) }}"
+                                        method="POST"
                                         class="d-none"
                                     >
                                         @csrf
