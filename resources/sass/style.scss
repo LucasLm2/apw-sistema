@@ -1,0 +1,60 @@
+.navbar {
+    .navbar-brand {
+        .img-logo {
+            max-width: 135px;
+            max-height: 80px;
+        }
+    }
+
+    .nav-item {
+        font-weight: 600;
+    }
+}
+
+.btn-new {
+    background-color: $blue-100;
+    font-weight: 600;
+
+    &:hover {
+        background-color: $blue-200;
+    }
+}
+
+.btn-deactive {
+    background-color: $yellow-100;
+    font-weight: 600;
+    color: $yellow-600;
+
+    &:hover {
+        color: $yellow-600;
+        background-color: $yellow-200;
+    }
+}
+
+.active {
+    .page-link {
+        background-color: $blue-100;
+        border-color: $blue-100;
+        color: $primary;
+    }
+}
+
+.h2-title-pages {
+    color: $primary;
+}
+
+.btn-edit {
+    @include btn_action_format($teal-200, $teal-600);
+
+    &:hover {
+        @include btn_action_format($teal-300, $teal-600);
+    }
+}
+
+.btn-inactive {
+    @include btn_action_format($red-200, $red-600);
+
+    &:hover {
+        @include btn_action_format($red-300, $red-600);
+    }
+}
