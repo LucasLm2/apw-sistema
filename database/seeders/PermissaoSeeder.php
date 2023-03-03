@@ -17,6 +17,15 @@ class PermissaoSeeder extends Seeder
             'cadastros',
         ];
 
+        $grupoPermissao = [
+            'cadastro-grupo-permissao',
+            'grupo-permissao-listar',
+            'grupo-permissao-cadastrar',
+            'grupo-permissao-editar',
+            'grupo-permissao-inativar',
+            'grupo-permissao-deletar',
+        ];
+
         $usuario = [
             'cadastro-usuario',
             'usuario-listar',
@@ -73,6 +82,7 @@ class PermissaoSeeder extends Seeder
 
         $permissions = array_merge(
             $menus,
+            $grupoPermissao,
             $usuario, 
             $tipoServico, 
             $tipoDespesa, 

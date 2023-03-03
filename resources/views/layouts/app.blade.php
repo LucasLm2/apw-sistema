@@ -61,6 +61,16 @@
                                                 </a>
                                             </li>
                                         @endcan
+                                        @can('cadastro-grupo-permissao')
+                                            <li>
+                                                <a 
+                                                    class="dropdown-item {{ request()->routeIs('cadastro.grupo-permissao.index') ? 'active':'' }}" 
+                                                    href="{{ route('cadastro.grupo-permissao.index') }}"
+                                                >
+                                                    {{ __('Grupo de Permissões') }}
+                                                </a>
+                                            </li>
+                                        @endcan
                                         @can('cadastro-reguladora')
                                             <li>
                                                 <a 

@@ -3,10 +3,10 @@
 use App\Http\Controllers\Auth\ConfirmPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Cadastros\ReguladoraController;
 use App\Http\Controllers\Cadastros\ClienteController;
+use App\Http\Controllers\Cadastros\GrupoPermissaoController;
 use App\Http\Controllers\Cadastros\SeguradoraController;
 use App\Http\Controllers\Cadastros\TipoDespesaController;
 use App\Http\Controllers\Cadastros\TipoServicoController;
@@ -43,20 +43,20 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('cadastro')->group(function () {
         Route::name('cadastro.')->group(function () {
 
-            // Route::resource('permissao', PermissaoController::class);
-            // Route::prefix('/permissao')->group(function () {
-            //     Route::name('permissao.')->group(function () {
-            //         Route::get('/inativos', [ReguladoraController::class, 'inativos'])->name('inativos');
-            //         Route::put('/{reguladora}/inativar-ativar', [ReguladoraController::class, 'inativarAtivar'])
-            //             ->name('inativar-ativar');
-            //     });
-            // });
+            Route::resource('grupo-permissao', GrupoPermissaoController::class)->except('show');
+            Route::prefix('/grupo-permissao')->group(function () {
+                Route::name('grupo-permissao.')->group(function () {
+                    Route::get('/inativos', [GrupoPermissaoController::class, 'inativos'])->name('inativos');
+                    Route::put('/{grupoPermissao}/inativar-ativar', [GrupoPermissaoController::class, 'inativarAtivar'])
+                        ->name('inativar-ativar');
+                });
+            });
 
             Route::resource('usuario', UsuarioController::class)->except('show');
             Route::prefix('/usuario')->group(function () {
                 Route::name('usuario.')->group(function () {
                     Route::get('/inativos', [UsuarioController::class, 'inativos'])->name('inativos');
-                    Route::put('/{reguladora}/inativar-ativar', [UsuarioController::class, 'inativarAtivar'])
+                    Route::put('/{usuario}/inativar-ativar', [UsuarioController::class, 'inativarAtivar'])
                         ->name('inativar-ativar');
                 });
             });
