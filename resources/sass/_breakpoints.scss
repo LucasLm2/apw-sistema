@@ -1,0 +1,32 @@
+// Breakpoints
+
+@mixin breakpoint_xs {
+    @media screen and (max-width: 575px) {
+        @content;
+    }
+}
+@mixin breakpoint_sm {
+    @media screen and (max-width: 767px) {
+        @content;
+    }
+}
+@mixin breakpoint_md {
+    @media screen and (max-width: 991px) {
+        @content;
+    }
+}
+@mixin breakpoint_lg {
+    @media screen and (max-width: 1199px) {
+        @content;
+    }
+}
+@mixin breakpoint_xl {
+    @media screen and (max-width: 1399px) {
+        @content;
+    }
+}
+@mixin breakpoint_xxl {
+    @media screen and (min-width: 1400px) {
+        @content;
+    }
+}

@@ -18,9 +18,9 @@
     <input id="url-cep" type="hidden" value="{{ config('app.bcode_ceps') }}">
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
+            <div class="container-fluid">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    <img class="img-logo" src="{{ url('/') }}/img/logo-site.png" alt="{{ config('app.name', 'Laravel') }}" />
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -38,93 +38,95 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link" href="{{ route('login') }}"><i class="fa-solid fa-right-to-bracket"></i> {{ __('Login') }}</a>
                                 </li>
                             @endif
                         @else
                             <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('home') ? 'active':'' }}" href="{{ route('home') }}">{{ __('Home') }}</a>
+                                <a class="nav-link {{ request()->routeIs('home') ? 'active':'' }}" href="{{ route('home') }}">
+                                    <i class="fa-solid fa-house"></i> {{ __('Home') }}
+                                </a>
                             </li>
                             @can('cadastros')
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Cadastros
+                                    <a class=" nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa-solid fa-file-circle-plus"></i> Cadastros
                                     </a>
                                     <ul class="dropdown-menu">
                                         @can('cadastro-cliente')
                                             <li>
-                                                <a 
-                                                    class="dropdown-item {{ request()->routeIs('cadastro.cliente.index') ? 'active':'' }}" 
+                                                <a
+                                                    class="dropdown-item {{ request()->routeIs('cadastro.cliente.index') ? 'active':'' }}"
                                                     href="{{ route('cadastro.cliente.index') }}"
                                                 >
-                                                    {{ __('Clientes') }}
+                                                    <i class="fa-solid fa-user-tie"></i> {{ __('Clientes') }}
                                                 </a>
                                             </li>
                                         @endcan
                                         @can('cadastro-reguladora')
                                             <li>
-                                                <a 
-                                                    class="dropdown-item {{ request()->routeIs('cadastro.reguladora.index') ? 'active':'' }}" 
+                                                <a
+                                                    class="dropdown-item {{ request()->routeIs('cadastro.reguladora.index') ? 'active':'' }}"
                                                     href="{{ route('cadastro.reguladora.index') }}"
                                                 >
-                                                    {{ __('Reguladoras') }}
+                                                    <i class="fa-solid fa-pen-ruler"></i> {{ __('Reguladoras') }}
                                                 </a>
                                             </li>
                                         @endcan
                                         @can('cadastro-seguradora')
                                             <li>
-                                                <a 
-                                                    class="dropdown-item {{ request()->routeIs('cadastro.seguradora.index') ? 'active':'' }}" 
+                                                <a
+                                                    class="dropdown-item {{ request()->routeIs('cadastro.seguradora.index') ? 'active':'' }}"
                                                     href="{{ route('cadastro.seguradora.index') }}"
                                                 >
-                                                    {{ __('Seguradoras') }}
+                                                    <i class="fa-solid fa-shield-halved"></i> {{ __('Seguradoras') }}
                                                 </a>
                                             </li>
                                         @endcan
                                         @can('cadastro-tipo-despesa')
                                             <li>
-                                                <a 
-                                                    class="dropdown-item {{ request()->routeIs('cadastro.tipo-despesa.index') ? 'active':'' }}" 
+                                                <a
+                                                    class="dropdown-item {{ request()->routeIs('cadastro.tipo-despesa.index') ? 'active':'' }}"
                                                     href="{{ route('cadastro.tipo-despesa.index') }}"
                                                 >
-                                                    {{ __('Tipo de despesas') }}
+                                                    <i class="fa-solid fa-file-invoice-dollar"></i> {{ __('Tipo de despesas') }}
                                                 </a>
                                             </li>
                                         @endcan
                                         @can('cadastro-tipo-servico')
                                             <li>
-                                                <a 
-                                                    class="dropdown-item {{ request()->routeIs('cadastro.tipo-servico.index') ? 'active':'' }}" 
+                                                <a
+                                                    class="dropdown-item {{ request()->routeIs('cadastro.tipo-servico.index') ? 'active':'' }}"
                                                     href="{{ route('cadastro.tipo-servico.index') }}"
                                                 >
-                                                    {{ __('Tipo de serviços') }}
+                                                    <i class="fa-solid fa-screwdriver-wrench"></i> {{ __('Tipo de serviços') }}
                                                 </a>
                                             </li>
                                         @endcan
                                         @can('cadastro-usuario')
                                             <li>
-                                                <a 
-                                                    class="dropdown-item {{ request()->routeIs('cadastro.usuario.index') ? 'active':'' }}" 
+                                                <a
+                                                    class="dropdown-item {{ request()->routeIs('cadastro.usuario.index') ? 'active':'' }}"
                                                     href="{{ route('cadastro.usuario.index') }}"
                                                 >
-                                                    {{ __('Usuários') }}
+                                                    <i class="fa-solid fa-user-group"></i> {{ __('Usuários') }}
                                                 </a>
                                             </li>
                                         @endcan
                                     </ul>
                                 </li>
                             @endcan
-                            
-                            <li class="nav-item dropdown">
+
+                            <li class="nav-item  dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                    <i class="fa-solid fa-user"></i> {{ Auth::user()->name }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        {{ __('Logout') }} <i class="fa-solid fa-right-from-bracket"></i>
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -148,7 +150,7 @@
         @endif
         new DataTable('.datatable', {
             language: {
-                lengthMenu: 'Exibir registros _MENU_ por página',
+                lengthMenu: 'Exibir _MENU_ por página',
                 zeroRecords: 'Nenhum registro encontrado!',
                 info: 'Mostrando a página _PAGE_ de _PAGES_',
                 infoEmpty: 'Não há registros disponíveis',
