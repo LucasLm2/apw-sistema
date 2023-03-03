@@ -1,0 +1,10 @@
+@mixin btn_action_format($bg-color, $color) {
+    padding: 0;
+    height: 30px;
+    width: 30px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $bg-color;
+    color: $color;
+}
