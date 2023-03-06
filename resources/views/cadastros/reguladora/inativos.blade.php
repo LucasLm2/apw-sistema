@@ -3,7 +3,7 @@
 @section('content')
 <div class="container bg-white p-5 rounded shadow-sm">
     <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
-        <h2 class="h3 fw-bold h2-title-pages">{{ __('Reguladoras Inativas') }}</h2>
+        <h2 class="h4 fw-bold h2-title-pages">{{ __('Reguladoras Inativas') }}</h2>
         <div>
             <a href="{{ route('cadastro.reguladora.index') }}" class="btn btn-new">
                 <i class="fa-solid fa-arrow-left"></i> {{ __('Return') }}

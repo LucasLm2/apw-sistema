@@ -3,7 +3,11 @@
 @section('content')
 <div class="container bg-white p-5 rounded shadow-sm">
     <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
-        <h2 class="h3 fw-bold h2-title-pages">{{ __('Nova reguladora') }}</h2>
+        @if (request()->routeIs('cadastro.reguladora.edit'))
+            <h2 class="h4 fw-bold h2-title-pages"><i class="fa-solid fa-pen-to-square"></i> {{ __('Editar reguladora') }}</h2>
+        @else
+            <h2 class="h4 fw-bold h2-title-pages"><i class="fa-solid fa-plus"></i> {{ __('Nova reguladora') }}</h2>
+        @endif
         <div>
             <a href="{{ route('cadastro.reguladora.index') }}" class="btn btn-new">
                 <i class="fa-solid fa-arrow-left"></i> {{ __('Return') }}

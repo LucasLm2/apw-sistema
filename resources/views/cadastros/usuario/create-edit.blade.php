@@ -3,7 +3,11 @@
 @section('content')
 <div class="col-md-8 col-lg-6 col-xl-5 bg-white p-5 rounded shadow-sm m-auto">
     <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
-        <h2 class="h3 h2-title-pages fw-bold color-primary"><i class="fa-solid fa-user-group"></i> {{ __('Novo Usuário') }}</h2>
+        @if (request()->routeIs('cadastro.usuario.edit'))
+            <h2 class="h4 h2-title-pages fw-bold color-primary"><i class="fa-solid fa-pen-to-square"></i> {{ __('Editar Usuário') }}</h2>
+        @else
+            <h2 class="h4 h2-title-pages fw-bold color-primary"><i class="fa-solid fa-user-group"></i> {{ __('Novo Usuário') }}</h2>
+        @endif
         <div>
             <a href="{{ route('cadastro.usuario.index') }}" class="btn btn-new">
                 <i class="fa-solid fa-arrow-left"></i> {{ __('Return') }}

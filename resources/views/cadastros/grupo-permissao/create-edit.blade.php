@@ -3,7 +3,11 @@
 @section('content')
 <div class="container bg-white p-5 rounded shadow-sm">
     <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
-        <h2 class="h3 fw-bold h2-title-pages">{{ __('Novo Grupo de permissão') }}</h2>
+        @if (request()->routeIs('cadastro.grupo-permissao.edit'))
+            <h2 class="h4 fw-bold h2-title-pages"><i class="fa-solid fa-pen-to-square"></i> {{ __('Editar Grupo de permissão') }}</h2>
+        @else
+            <h2 class="h4 fw-bold h2-title-pages"><i class="fa-solid fa-plus"></i> {{ __('Novo Grupo de permissão') }}</h2>
+        @endif
         <div>
             <a href="{{ route('cadastro.grupo-permissao.index') }}" class="btn btn-new">
                 <i class="fa-solid fa-arrow-left"></i> {{ __('Return') }}
