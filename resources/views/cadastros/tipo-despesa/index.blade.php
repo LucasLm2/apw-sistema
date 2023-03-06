@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <table class="table table-sm table-striped table-hover datatable py-4">
+    <table class="table table-lg table-striped table-hover datatable py-4">
         <thead>
             <tr>
                 <th class="col-2">{{ __('Name') }}</th>
