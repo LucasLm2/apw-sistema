@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container bg-white p-5 rounded shadow-sm">
+<div class="container p-3">
     <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
         <h2 class="h3 fw-bold h2-title-pages"><i class="fa-solid fa-user-tie"></i> {{ __('Clientes') }}</h2>
         <div>

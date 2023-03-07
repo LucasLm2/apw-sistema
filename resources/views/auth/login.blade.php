@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="d-flex justify-content-center">
-    <div class="col-md-8 col-lg-6 col-xl-5 bg-white p-5 rounded shadow-sm">
+    <div class="col-10 col-sm-10 col-md-8 col-lg-6 col-xl-5 p-3">
         <h2 class="h3 h2-title-pages border-bottom pb-3 mb-4 fw-bold"><i class="fa-solid fa-right-to-bracket"></i> {{ __('Login') }}</h2>
         <form method="POST" action="{{ route('login') }}">
             @csrf

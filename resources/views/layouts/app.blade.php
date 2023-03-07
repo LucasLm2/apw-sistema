@@ -17,7 +17,7 @@
     <input id="url-base" type="hidden" value="{{ config('app.url') }}">
     <input id="url-cep" type="hidden" value="{{ config('app.bcode_ceps') }}">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light border-bottom border-3">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img class="img-logo" src="{{ url('/') }}/img/logo-site.png" alt="{{ config('app.name', 'Laravel') }}" />
