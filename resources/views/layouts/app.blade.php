@@ -65,11 +65,11 @@
                                         @endcan
                                         @can('cadastro-grupo-permissao')
                                             <li>
-                                                <a 
-                                                    class="dropdown-item {{ request()->routeIs('cadastro.grupo-permissao.index') ? 'active':'' }}" 
+                                                <a
+                                                    class="dropdown-item {{ request()->routeIs('cadastro.grupo-permissao.index') ? 'active':'' }}"
                                                     href="{{ route('cadastro.grupo-permissao.index') }}"
                                                 >
-                                                    {{ __('Grupo de Permissões') }}
+                                                    <i class="fa-solid fa-lock"></i> {{ __('Grupo de Permissões') }}
                                                 </a>
                                             </li>
                                         @endcan
