@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container bg-white p-5 rounded shadow-sm">
+<div class="container p-3">
     <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
         <h2 class="h4 fw-bold h2-title-pages">{{ __('Tipo de serviços inativos') }}</h2>
         <div>

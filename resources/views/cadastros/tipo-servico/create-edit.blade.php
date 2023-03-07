@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container bg-white p-5 rounded shadow-sm">
+<div class="container p-3">
     <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
         @if (request()->routeIs('cadastro.tipo-servico.edit'))
             <h2 class="h4 fw-bold h2-title-pages"><i class="fa-solid fa-pen-to-square"></i> {{ __('Editar tipo de servico') }}</h2>
